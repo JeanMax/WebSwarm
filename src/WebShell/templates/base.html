@@ -6,9 +6,8 @@
     <title>{% block title %}{% endblock %}rmrf</title>
 	<link rel="shortcut icon" href="/static/img/favicon.ico"/>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"> <!--TODO-->
-    <script src="https://unpkg.com/mithril/mithril.js"></script> <!--TODO-->
-	{# <link rel="stylesheet" type="text/css" href={% static "css/rmrf.min.css" %}> #} <!--TODO-->
+	<script type="text/javascript" src="/static/js/mithril.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/static/css/rmrf.min.css">
     {% block style %}{% endblock %}
   </head>
 
@@ -20,8 +19,7 @@
 
     {% block footer %}{% endblock %}
 
-	<script type="text/javascript" src="static/js/rmrf.js"></script>
-
+	<script type="text/javascript" src="/static/js/rmrf.min.js"></script>
     {% block script %}{% endblock %}
   </body>
 </html>

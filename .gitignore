@@ -25,3 +25,9 @@ docs
 
 # virtual env
 .venv
+
+# npm modules
+node_modules
+
+# static files generated via npm
+static
