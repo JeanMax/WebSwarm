@@ -46,7 +46,7 @@ lint:
 	find $(SRC_DIR) -name \*.py | grep -vE '\.#|flycheck_|eggs' | xargs $(LINTER)
 
 flake:
-	$(FLAKE)
+	$(FLAKE) $(SRC_DIR)
 
 test:
 	python -Wall $(TESTER)
