@@ -10,7 +10,8 @@ sources:
 environment:
   PIP_PROGRESS_BAR: 'off'
   PROJECT: WebShell
-
+  LC_ALL: C.UTF-8
+  LANG: C.UTF-8
 
 tasks:
   - checkout: |
@@ -19,8 +20,9 @@ tasks:
       git checkout $LAST_COMMIT_HASH
 
   - venv: |
-      python3 -m venv ~/.venv
-      echo . ~/.venv/bin/activate >> ~/.buildenv
+      cd $PROJECT
+      python3 -m venv .venv
+      echo . ~/$PROJECT/.venv/bin/activate >> ~/.buildenv
 
   - pip: |
       pip install --upgrade pip setuptools
