@@ -1,6 +1,7 @@
 # WebShell
 
 A website acting as a remote shell.
+[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?)
 
 
 ## Installation: Makefile
