@@ -1,7 +1,11 @@
 # WebShell
 
-[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?)<br />
 A website acting as a remote shell.
+
+| OS | Build |
+|-|-|
+| `archlinux` | [![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?) |
+| `ubuntu` | [![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/ubuntu.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/ubuntu.yml?) |
 
 
 ## Usage:
