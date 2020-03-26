@@ -1,0 +1,24 @@
+# general things to ignore
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*~
+.eggs
+
+# due to using pytest & co
+.tox
+.cache
+.coverage
+
+# data you shouldn't push
+data/
+*.pt
+*.csv
+*.h5
+
+# doc
+docs
