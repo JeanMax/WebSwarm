@@ -1,7 +1,22 @@
 # WebShell
 
+[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?)<br />
 A website acting as a remote shell.
-[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?)
+
+
+## Usage:
+
+* You can run the flask server like this:
+
+```shell
+./runserver.sh
+```
+
+
+## Dependencies:
+
+* python3
+* flask
 
 
 ## Installation: Makefile
@@ -26,14 +41,4 @@ If you want a classic' installation, run:
 
 ```shell
 make install
-```
-
-
-
-## Usage:
-
-* You can run the flask server like this:
-
-```shell
-./runserver.sh
 ```
