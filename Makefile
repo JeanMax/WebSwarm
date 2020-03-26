@@ -52,7 +52,7 @@ test:
 	python -Wall $(TESTER)
 
 todo:
-	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.travis\.yml|flycheck_)'
+	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.travis\.yml|flycheck_|\./\.venv|\./\.pytest_cache)'
 
 check: lint flake test todo
 

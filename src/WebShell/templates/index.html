@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Yo | {% endblock %}
+
+{% block content %}
+  <h1 class="title">
+    Hello {% if name %}{{name}}{% else %}World{% endif %}
+  </h1>
+  <div id="root"></div>
+{% endblock %}
