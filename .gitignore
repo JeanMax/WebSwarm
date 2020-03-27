@@ -31,3 +31,4 @@ node_modules
 
 # static files generated via npm
 static
+.checksum
