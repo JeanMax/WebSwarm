@@ -23,7 +23,7 @@
     "css-postcss-prod": "postcss --no-map --use cssnano --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "js-deploy": "npm run js-build && npm run js-uglify",
     "js-deploy-prod": "npm run js-build && npm run js-uglify-prod",
-    "js-build": "cat src/WebShell/templates/js/*.js > src/WebShell/static/js/rmrf.js && cp node_modules/mithril/mithril{,.min}.js src/WebShell/static/js/",
+    "js-build": "cat src/WebShell/templates/js/*.js > src/WebShell/static/js/rmrf.js && cp node_modules/mithril/mithril.min.js node_modules/mithril/mithril.js src/WebShell/static/js/",
     "js-uglify": "cp src/WebShell/static/js/rmrf.js src/WebShell/static/js/rmrf.min.js",
     "js-uglify-prod": "uglifyjs src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js"
   },
