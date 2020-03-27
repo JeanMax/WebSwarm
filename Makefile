@@ -13,7 +13,7 @@ TMP_FILES = build dist temp .pytest_cache .eggs \
 			$(shell find . -name __pycache__) \
 			$(shell find . -name '*.egg-info') \
 
-TESTER = setup.py --quiet test --addopts --fulltrace
+TESTER = setup.py --quiet test
 FLAKE = flake8
 LINTER = pylint --rcfile=setup.cfg $(shell test "$(TERM)" = dumb && echo "-fparseable")
 PIP_INSTALL = pip install  # TODO
@@ -24,10 +24,10 @@ RM = rm -rfv
 # INSTALL
 $(NAME): dev
 
-install:
+install: front-install
 	$(PIP_INSTALL) .
 
-dev:
+dev: front-install
 	$(PIP_INSTALL) .[dev]
 	$(PIP_INSTALL) --editable .
 
@@ -41,6 +41,15 @@ reinstall: uninstall
 	$(MAKE) $(NAME)
 
 
+# FRONT ASSETS
+front-install:
+	npm install
+	$(MAKE) front-deploy
+
+front-deploy:
+	npm start
+
+
 # LINT && TEST
 lint:
 	find $(SRC_DIR) -name \*.py | grep -vE '\.#|flycheck_|eggs' | xargs $(LINTER)
@@ -52,11 +61,12 @@ test:
 	python -Wall $(TESTER)
 
 todo:
-	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.travis\.yml|flycheck_|\./\.venv|\./\.pytest_cache)'
+	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.builds|flycheck_|\./\.venv|\./\.pytest_cache|\./node_modules)'
 
 check: lint flake test todo
 
 
 # Avoid collisions between rules and files
 .PHONY: $(NAME), install, dev, clean, clean_db_dump, uninstall, reinstall, \
+		front-install, front-deploy,
 		lint, flake, test, check, todo,

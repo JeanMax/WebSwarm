@@ -2,7 +2,7 @@ image: archlinux
 # shell: true
 packages:
   - python
-  # - npm
+  - npm
 sources:
   - git@git.sr.ht:~jean-max/WebShell
 environment:

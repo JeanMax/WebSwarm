@@ -22,7 +22,7 @@ You can run the flask server like this:
 ## Dependencies:
 
 * python3
-* flask
+* npm
 
 
 ## Installation: Makefile
