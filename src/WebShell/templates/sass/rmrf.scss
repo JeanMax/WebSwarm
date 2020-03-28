@@ -1,38 +1,11 @@
 @charset "utf-8";
 
-// Customization
-
-// You can easily customize Bulma with your own variables.
-// Just uncomment the following block to see the result.
-
-/*
-// 1. Import the initial variables
-@import "../node_modules/bulma/sass/utilities/initial-variables";
-
-// 2. Set your own initial variables
-// Update the blue shade, used for links
-$blue: #06bcef;
-// Add pink and its invert
-$pink: #ff8080;
-$pink-invert: #fff;
-// Update the sans-serif font family
-$family-sans-serif: "Helvetica", "Arial", sans-serif;
-
-// 3. Set the derived variables
-// Use the new pink as the primary color
-$primary: $pink;
-$primary-invert: $pink-invert;
-
-// 4. Import the rest of Bulma
-*/
-
 @import "../../../../node_modules/bulma/sass/utilities/initial-variables";
 @import "../../../../node_modules/bulmaswatch/solar/_variables.scss";
 
 $bulmaswatch-import-font: false;
 
 // @import "../../../../node_modules/bulma/bulma";
-
 
 
 // @import "../../../../node_modules/bulma/sass/utilities/_all.sass";
@@ -57,9 +30,9 @@ $bulmaswatch-import-font: false;
 // @import "../../../../node_modules/bulma/sass/components/media.sass";
 @import "../../../../node_modules/bulma/sass/components/menu.sass";
 // @import "../../../../node_modules/bulma/sass/components/message.sass";
-// @import "../../../../node_modules/bulma/sass/components/modal.sass";
+@import "../../../../node_modules/bulma/sass/components/modal.sass";
 @import "../../../../node_modules/bulma/sass/components/navbar.sass";
-@import "../../../../node_modules/bulma/sass/components/pagination.sass";
+// @import "../../../../node_modules/bulma/sass/components/pagination.sass";
 // @import "../../../../node_modules/bulma/sass/components/panel.sass";
 // @import "../../../../node_modules/bulma/sass/components/tabs.sass";
 
@@ -67,22 +40,22 @@ $bulmaswatch-import-font: false;
 // @import "../../../../node_modules/bulma/sass/elements/box.sass";
 @import "../../../../node_modules/bulma/sass/elements/button.sass";
 @import "../../../../node_modules/bulma/sass/elements/container.sass";
-// @import "../../../../node_modules/bulma/sass/elements/content.sass";
+@import "../../../../node_modules/bulma/sass/elements/content.sass";
 // @import "../../../../node_modules/bulma/sass/elements/icon.sass";
 // @import "../../../../node_modules/bulma/sass/elements/image.sass";
 // @import "../../../../node_modules/bulma/sass/elements/notification.sass";
-// @import "../../../../node_modules/bulma/sass/elements/other.sass";
 // @import "../../../../node_modules/bulma/sass/elements/progress.sass";
 @import "../../../../node_modules/bulma/sass/elements/table.sass";
 // @import "../../../../node_modules/bulma/sass/elements/tag.sass";
 @import "../../../../node_modules/bulma/sass/elements/title.sass";
+@import "../../../../node_modules/bulma/sass/elements/other.sass";
 
 @import "../../../../node_modules/bulma/sass/form/_all.sass";
-// @import "../../../../node_modules/bulma/sass/form/checkbox-radio.sass";
-// @import "../../../../node_modules/bulma/sass/form/file.sass";
-// @import "../../../../node_modules/bulma/sass/form/input-textarea.sass";
-// @import "../../../../node_modules/bulma/sass/form/select.sass";
 // @import "../../../../node_modules/bulma/sass/form/shared.sass";
+// @import "../../../../node_modules/bulma/sass/form/input-textarea.sass";
+// @import "../../../../node_modules/bulma/sass/form/checkbox-radio.sass";
+// @import "../../../../node_modules/bulma/sass/form/select.sass";
+// @import "../../../../node_modules/bulma/sass/form/file.sass";
 // @import "../../../../node_modules/bulma/sass/form/tools.sass";
 
 // @import "../../../../node_modules/bulma/sass/grid/_all.sass";
@@ -100,62 +73,8 @@ $bulmaswatch-import-font: false;
 
 
 
-@import '../../../../node_modules/pretty-checkbox/src/scss/_variables.scss';
-@import '../../../../node_modules/pretty-checkbox/src/scss/_core.scss';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/default/fill';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/default/outline';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/default/thick';
-
-@import '../../../../node_modules/pretty-checkbox/src/scss/elements/font-icon/general';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/svg/general';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/image/general';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/switch/general';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/switch/fill';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/elements/switch/slim';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/toggle';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/plain';
-@import '../../../../node_modules/pretty-checkbox/src/scss/extras/round';
-@import '../../../../node_modules/pretty-checkbox/src/scss/extras/curve';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/animation';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/disabled';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/locked';
-@import '../../../../node_modules/pretty-checkbox/src/scss/extras/colors';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/extras/print';
-
-// @import '../../../../node_modules/pretty-checkbox/src/scss/states/hover';
-// @import '../../../../node_modules/pretty-checkbox/src/scss/states/focus';
-@import '../../../../node_modules/pretty-checkbox/src/scss/states/indeterminate';
-
-
 @import 'icon-embedded';
 
-
-
-// on-check(navbar-toggle) && is-mobile
-@media screen and (max-width: 1023px) {
-	// show menu
-	#navbar-toggle:checked ~ .navbar-menu {
-		display: block;
-	}
-
-	// burger spans = to x
-	#navbar-toggle:checked ~ .navbar-brand .navbar-burger span:nth-child(1) {
-		-webkit-transform: translateY(5px) rotate(45deg);
-        transform: translateY(5px) rotate(45deg);
-	}
-	#navbar-toggle:checked ~ .navbar-brand .navbar-burger span:nth-child(2) {
-		opacity: 0;
-	}
-	#navbar-toggle:checked ~ .navbar-brand .navbar-burger span:nth-child(3) {
-		-webkit-transform: translateY(-5px) rotate(-45deg);
-        transform: translateY(-5px) rotate(-45deg);
-	}
-}
 
 // fix horizontal box spacing
 .box {

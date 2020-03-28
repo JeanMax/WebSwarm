@@ -24,7 +24,6 @@
     "mithril": "^2.0.4",
     "node-sass": "^4.13.1",
     "postcss-cli": "^7.1.0",
-    "pretty-checkbox": "^3.0.3",
     "uglify-js": "^3.8.0"
   },
   "babel": {
@@ -46,7 +45,7 @@
     "deploy": "npm run css-deploy-prod && npm run js-deploy-prod",
     "css-deploy": "npm run css-build && npm run css-postcss",
     "css-deploy-prod": "npm run css-build && npm run css-postcss-prod",
-    "css-build": "node-sass src/WebShell/templates/sass/rmrf.scss src/WebShell/static/css/rmrf.css",
+    "css-build": "node-sass --omit-source-map-url src/WebShell/templates/sass/rmrf.scss src/WebShell/static/css/rmrf.css",
     "css-postcss": "postcss --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "css-postcss-prod": "postcss --no-map --use cssnano --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "js-deploy": "npm run js-build && npm run js-uglify",
