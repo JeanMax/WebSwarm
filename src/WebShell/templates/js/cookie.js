@@ -2,12 +2,14 @@
 
 function get_cookie(key) {
     var cookie, ret = null;
+
     document.cookie.split(';').forEach(c => {
         cookie = c.split("=");
         if (cookie[0].trim() == key) {
             ret = cookie[1];
         }
     });
+
     return ret;
 }
 

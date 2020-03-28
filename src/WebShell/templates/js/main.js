@@ -1,27 +1,16 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', function () {
-    var root = document.getElementById("root");
-
-    var Title = {
-        view: function (vnode) {
-            return <h2>{vnode.children}</h2>
-        }
-    };
+    var root = document.body;
 
     m.render(
         root,
-        <Title>Mithril? yes</Title>
+        <div id="root">
+          <Navbar/>
+          <LoginModal/>
+          <section class="section">
+            <h1 class="title">Hello World!</h1>
+          </section>
+        </div>
     );
 });
-
-
-function login() {
-    var username = document.getElementById("login-input").value;
-    set_cookie("user", username);
-    document.getElementById("login-modal").classList.remove("is-active");
-}
-
-function logout() {
-    del_cookie("user");
-}
