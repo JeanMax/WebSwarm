@@ -10,6 +10,7 @@ var Main =  {
               <LoginModal/>
               <section class="section">
                 <h1 class="title">Hello World!</h1>
+                <Chat/>
               </section>
             </div>
         );

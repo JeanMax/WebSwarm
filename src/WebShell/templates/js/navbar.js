@@ -39,7 +39,7 @@ function Navbar(initialVnode) {
                       <div class="navbar-item">
                         <div class="buttons">
                           {g_username != null ?
-                            <><a class="button is-warning" onclick={logout}><strong>Log out</strong></a><div class="navbar-item"><strong>User: </strong>{g_username}</div></>
+                            <><a class="button is-warning" onclick={logout}><strong>Log out</strong></a><div class="navbar-item"><strong>User:&nbsp;</strong>{g_username}</div></>
                             : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>
                           }
                         </div>
