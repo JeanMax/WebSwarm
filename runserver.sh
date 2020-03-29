@@ -26,6 +26,10 @@ build_all() {
 	js=$(find src -name '*.js' | grep -vE '\.#|static')
 	up_to_date $checksum_dir/js.sha1 $js \
 		|| npm run-script js-deploy
+
+	html=$(find src -name '*.html' | grep -vE '\.#|static')
+	up_to_date $checksum_dir/html.sha1 $html \
+		|| npm run-script html-deploy
 }
 
 watch_build() {

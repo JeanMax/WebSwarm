@@ -21,6 +21,7 @@
     "bulma": "^0.8.1",
     "bulmaswatch": "^0.8.0",
     "cssnano": "^4.1.10",
+    "html-minifier-terser": "^5.0.5",
     "mithril": "^2.0.4",
     "node-sass": "^4.13.1",
     "postcss-cli": "^7.1.0",
@@ -42,8 +43,8 @@
     ]
   },
   "scripts": {
-    "start": "npm run css-deploy && npm run js-deploy",
-    "deploy": "npm run css-deploy-prod && npm run js-deploy-prod",
+    "start": "npm run css-deploy && npm run js-deploy && npm run html-deploy",
+    "deploy": "npm run css-deploy-prod && npm run js-deploy-prod && npm run html-deploy",
     "css-deploy": "npm run css-build && npm run css-postcss",
     "css-deploy-prod": "npm run css-build && npm run css-postcss-prod",
     "css-build": "node-sass --omit-source-map-url src/WebShell/templates/sass/rmrf.scss src/WebShell/static/css/rmrf.css",
@@ -53,6 +54,7 @@
     "js-deploy-prod": "npm run js-build && npm run js-uglify-prod",
     "js-build": "babel src/WebShell/templates/js/*.js --out-file src/WebShell/static/js/rmrf.js && cp node_modules/mithril/mithril.js node_modules/socket.io-client/dist/socket.io.js src/WebShell/static/js/",
     "js-uglify": "cp src/WebShell/static/js/rmrf.js src/WebShell/static/js/rmrf.min.js",
-    "js-uglify-prod": "uglifyjs src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js"
+    "js-uglify-prod": "uglifyjs src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js",
+    "html-deploy": "html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype src/WebShell/templates/index.html --output src/WebShell/static/index.html"
   }
 }

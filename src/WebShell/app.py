@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, current_app, render_template
+from flask import Flask, current_app
 from flask_socketio import SocketIO
 
 
@@ -11,8 +11,7 @@ socketio = SocketIO(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
-    # return current_app.send_static_file('index.html')
+    return current_app.send_static_file('index.html')
 
 
 @socketio.on('my event')
