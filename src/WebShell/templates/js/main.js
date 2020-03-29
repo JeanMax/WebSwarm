@@ -1,5 +1,6 @@
 'use strict';
 
+var socket = io();
 var g_username = get_cookie("user");
 
 var Main =  {

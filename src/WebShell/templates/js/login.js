@@ -32,19 +32,23 @@ function LoginModal(initialVnode) {
 
     function login() {
         var username_value = document.getElementById("login-input").value;
-        if (is_valid_username(username_value)) {
-            set_cookie("user", username_value);
-            g_username = username_value;
-            close_modal();
+        if (!is_valid_username(username_value)) {
+            return;
         }
+        set_cookie("user", username_value);
+        g_username = username_value;
+        close_modal();
+        socket.on("connect", function() {
+            socket.emit("my event", {data: "I'm connected!"});
+        });
     }
 
     function close_modal() {
-        document.documentElement.classList.remove('is-clipped');
-        document.getElementById("login-modal").classList.remove('is-active');
+        document.documentElement.classList.remove("is-clipped");
+        document.getElementById("login-modal").classList.remove("is-active");
     }
 
-    document.addEventListener('keydown', function (event) {
+    document.addEventListener("keydown", function (event) {
         var e = event || window.event;
         if (e.keyCode === 27) {
             close_modal();

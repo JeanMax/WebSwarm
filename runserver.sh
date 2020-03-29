@@ -2,12 +2,6 @@
 set -e
 set -x
 
-test "$VIRTUAL_ENV" || . .venv/bin/activate
-
-export FLASK_ENV=development
-export FLASK_APP=src/WebShell/app.py
-export SECRET_KEY=pouet
-
 
 
 # AUTO REBUILD
@@ -42,5 +36,12 @@ watch_build() {
 	done
 }
 
+
+test "$VIRTUAL_ENV" || . .venv/bin/activate
+
+export FLASK_ENV=development
+export SECRET_KEY=pouet
+
 watch_build &
-flask run
+# FLASK_APP=src/WebShell/app.py flask run
+webshell
