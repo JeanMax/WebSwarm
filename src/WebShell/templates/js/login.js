@@ -1,19 +1,20 @@
 
-function open_modal() {  //...
+function open_modal() {
     document.documentElement.classList.add('is-clipped');
     document.getElementById("login-modal").classList.add('is-active');
 }
 
+
+// TODO: find a way to better scope these previous functions
+
 function LoginModal(initialVnode) {
 
     function login() {
-        var username = document.getElementById("login-input").value;
-        set_cookie("user", username);
+        var username_value = document.getElementById("login-input").value;
+        //TODO: input validation
+        set_cookie("user", username_value);
+        g_username = username_value;
         close_modal();
-    }
-
-    function logout() {
-        del_cookie("user");
     }
 
     function close_modal() {
@@ -26,6 +27,7 @@ function LoginModal(initialVnode) {
         if (e.keyCode === 27) {
             close_modal();
         }
+        //TODO: enter to send form
     });
 
     return {
@@ -55,4 +57,3 @@ function LoginModal(initialVnode) {
         }
     };
 }
-// <a class="button is-warning" onclick="logout()"><strong>Log out</strong></

@@ -8,7 +8,13 @@ function Navbar(initialVnode) {
         burger.classList.toggle('is-active');
     }
 
+    function logout() {
+        del_cookie("user");
+        g_username = null;
+    }
+
     return {
+
         view: function(vnode) {
             return (
                 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -32,7 +38,10 @@ function Navbar(initialVnode) {
                     <div class="navbar-end">
                       <div class="navbar-item">
                         <div class="buttons">
-                          <a class="button is-light modal-button" onclick={open_modal}>Log in</a>
+                          {g_username != null ?
+                            <><a class="button is-warning" onclick={logout}><strong>Log out</strong></a><div class="navbar-item"><strong>User: </strong>{g_username}</div></>
+                            : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>
+                          }
                         </div>
                       </div>
                     </div>
