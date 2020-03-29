@@ -148,6 +148,8 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[  # Optional
         'flask',
+        'flask-socketio',
+        'eventlet',
     ],
 
     # List additional groups of dependencies here (e.g. development
