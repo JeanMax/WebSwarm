@@ -42,6 +42,7 @@ tasks:
       cd $PROJECT
       make flake
       make lint
+      make eslint
       make todo || true
 
   - test: |

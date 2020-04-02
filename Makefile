@@ -51,6 +51,9 @@ front-deploy:
 
 
 # LINT && TEST
+eslint:
+	npm run lint
+
 lint:
 	find $(SRC_DIR) -name \*.py | grep -vE '\.#|flycheck_|eggs' | xargs $(LINTER)
 
@@ -63,7 +66,8 @@ test:
 todo:
 	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.builds|flycheck_|\./\.venv|\./\.pytest_cache|\./node_modules)'
 
-check: lint flake test todo
+check: lint flake test eslint
+	$(MAKE) todo || true
 
 
 # Avoid collisions between rules and files

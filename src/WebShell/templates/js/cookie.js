@@ -1,9 +1,7 @@
-'use strict';
-
 function get_cookie(key) {
     var cookie, ret = null;
 
-    document.cookie.split(';').forEach(c => {
+    document.cookie.split(";").forEach(c => {
         cookie = c.split("=");
         if (cookie[0].trim() == key) {
             ret = cookie[1];
@@ -14,7 +12,7 @@ function get_cookie(key) {
 }
 
 function set_cookie(key, value, days) {
-    if (typeof(days) === 'undefined') {
+    if (typeof(days) === "undefined") {
         days = 365;
     }
     var date = new Date();
