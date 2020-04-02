@@ -10,7 +10,7 @@ function open_modal() {
 function LoginModal(initialVnode) {
 
     function is_valid_username(s) {
-        return /[a-zA-Z0-9_-]{2,}/.test(s);
+        return /^\w{2,}$/.test(s);
     }
 
     function validate_username() {
@@ -46,18 +46,21 @@ function LoginModal(initialVnode) {
         document.getElementById("login-modal").classList.remove("is-active");
     }
 
-    document.addEventListener("keydown", function (event) {
-        var e = event || window.event;
-        if (e.keyCode === 27) {
-            close_modal();
-        } else if (e.keyCode == 13 && document.getElementById("login-modal")
-                                              .classList.value.includes("is-active")) {
-            login();
-            m.redraw();
-        }
-    });
-
     return {
+        oninit: function(vnode) {
+            document.addEventListener("keydown", function (event) {
+                var e = event || window.event;
+                if (e.keyCode === 27) {
+                    close_modal();
+                } else if (e.keyCode == 13
+                           && document.getElementById("login-modal")
+                    .classList.value.includes("is-active")) {
+                        login();
+                        m.redraw();
+                    }
+            });
+        },
+
         view: function(vnode) {
             return (
                 <div class="modal" id="login-modal">

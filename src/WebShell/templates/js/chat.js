@@ -49,6 +49,15 @@ function Chat(initialVnode) {
                 g_chat_logs.push(msg);
                 setTimeout(m.redraw, 50);
             });
+
+            document.addEventListener("keydown", function (event) {
+                var e = event || window.event;
+                if (e.keyCode == 13
+                    && document.activeElement === document.getElementById("message-input")) {
+                    send_chat_msg();
+                }
+            });
+
         },
 
         onupdate: function(vnode) {
