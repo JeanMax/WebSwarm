@@ -10,6 +10,7 @@ function Navbar(initialVnode) {
 
     function logout() {
         del_cookie("user");
+        socket.emit("logout", {user: g_username});
         g_username = null;
     }
 

@@ -26,7 +26,7 @@
     "node-sass": "^4.13.1",
     "postcss-cli": "^7.1.0",
     "socket.io-client": "^2.3.0",
-    "uglify-js": "^3.8.1"
+    "terser": "^4.6.7"
   },
   "babel": {
     "presets": [
@@ -48,13 +48,13 @@
     "css-deploy": "npm run css-build && npm run css-postcss",
     "css-deploy-prod": "npm run css-build && npm run css-postcss-prod",
     "css-build": "node-sass --omit-source-map-url src/WebShell/templates/sass/rmrf.scss src/WebShell/static/css/rmrf.css",
-    "css-postcss": "postcss --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
+    "css-postcss": "postcss --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "css-postcss-prod": "postcss --no-map --use cssnano --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "js-deploy": "npm run js-build && npm run js-uglify",
     "js-deploy-prod": "npm run js-build && npm run js-uglify-prod",
     "js-build": "babel src/WebShell/templates/js/*.js --out-file src/WebShell/static/js/rmrf.js && cp node_modules/mithril/mithril.js node_modules/socket.io-client/dist/socket.io.js src/WebShell/static/js/",
     "js-uglify": "cp src/WebShell/static/js/rmrf.js src/WebShell/static/js/rmrf.min.js",
-    "js-uglify-prod": "uglifyjs src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js",
+    "js-uglify-prod": "terser src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js",
     "html-deploy": "html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype src/WebShell/templates/index.html --output src/WebShell/static/index.html"
   }
 }

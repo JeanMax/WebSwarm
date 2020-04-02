@@ -18,15 +18,15 @@ function LoginModal(initialVnode) {
         if (!username_value) {
             document.getElementById("login-input").classList.remove("is-success");
             document.getElementById("login-input").classList.remove("is-danger");
-            document.getElementById("login-helper").textContent = ""
+            document.getElementById("login-helper").textContent = "";
         } else if (is_valid_username(username_value)) {
             document.getElementById("login-input").classList.remove("is-danger");
             document.getElementById("login-input").classList.add("is-success");
-            document.getElementById("login-helper").textContent = ""
+            document.getElementById("login-helper").textContent = "";
         } else {
             document.getElementById("login-input").classList.remove("is-success");
             document.getElementById("login-input").classList.add("is-danger");
-            document.getElementById("login-helper").textContent = "Invalid Username"
+            document.getElementById("login-helper").textContent = "Invalid Username";
         }
     }
 
@@ -35,12 +35,10 @@ function LoginModal(initialVnode) {
         if (!is_valid_username(username_value)) {
             return;
         }
+        close_modal();
         set_cookie("user", username_value);
         g_username = username_value;
-        close_modal();
-        socket.on("connect", function() {
-            socket.emit("my event", {data: "I'm connected!"});
-        });
+        socket.emit("login", {user: g_username});
     }
 
     function close_modal() {
@@ -65,21 +63,22 @@ function LoginModal(initialVnode) {
                 <div class="modal" id="login-modal">
                   <div class="modal-background" onclick={close_modal}></div>
                     <div class="modal-content is-clipped">
+
                       <div class="columns is-mobile is-centered">
                         <div class="column is-half">
-
+                          <label class="label is-centered">Enter your name:</label>
                           <div class="field has-addons">
                             <div class="control">
-                              <input class="input" id="login-input" type="text" placeholder="Enter your name" onkeyup={validate_username}/>
+                              <input class="input" id="login-input" type="text" placeholder="Username" onkeyup={validate_username}/>
                             </div>
                             <div class="control">
                               <a class="button is-info" onclick={login}>Log in</a>
                             </div>
                           </div>
                           <p class="help is-danger" id="login-helper"></p>
-
                         </div>
                       </div>
+
                     </div>
                   <button class="modal-close is-large" aria-label="close" onclick={close_modal}></button>
                 </div>

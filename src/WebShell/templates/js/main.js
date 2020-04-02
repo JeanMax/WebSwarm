@@ -1,7 +1,6 @@
 'use strict';
 
-var socket = io();
-var g_username = get_cookie("user");
+var g_username;
 
 var Main =  {
     view: function() {
@@ -20,6 +19,7 @@ var Main =  {
 
 document.addEventListener('DOMContentLoaded', function () {
     var root = document.body;
+    g_username = get_cookie("user");
 
     m.mount(root, Main);
 });
