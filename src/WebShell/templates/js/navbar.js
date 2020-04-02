@@ -20,9 +20,9 @@ function Navbar(initialVnode) {
             return (
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                   <div class="navbar-brand">
-                    <a class="navbar-item" href="/">
+                    <Link class="navbar-item" href="/index">
                       <img src="/static/img/logo.png" width="96"/>
-                    </a>
+                    </Link>
 
                     <label role="button" class="navbar-burger burger" id="super-burger" aria-label="menu" aria-expanded="false" onclick={toggle_navbar}>
                       <span aria-hidden="true"></span>
@@ -33,7 +33,7 @@ function Navbar(initialVnode) {
 
                   <div class="navbar-menu" id="super-navbar">
                     <div class="navbar-start">
-                      <a class="navbar-item" href="/TODO">TODO</a>
+                      <Link class="navbar-item" href="/chat">Chat</Link>
                     </div>
 
                     <div class="navbar-end">

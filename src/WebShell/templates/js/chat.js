@@ -1,3 +1,6 @@
+var g_chat_logs = [
+    // {user: "Bob", content: "blabla"},
+];
 
 
 function Message(initialVnode) {
@@ -15,9 +18,7 @@ function Message(initialVnode) {
 
 
 function Chat(initialVnode) {
-    var chat_logs = [
-        // {user: "Bob", content: "blabla"},
-    ];
+    var chat_logs = g_chat_logs;
 
     function chat_logs_to_html() {
         return chat_logs.map(msg => {
@@ -45,7 +46,7 @@ function Chat(initialVnode) {
         oninit: function(vnode) {
             socket.on("chat_message_log", function(msg) {
                 console.log("chat msg received:" + JSON.stringify(msg)); // DEBUG
-                chat_logs.push(msg);
+                g_chat_logs.push(msg);
                 setTimeout(m.redraw, 50);
             });
         },
