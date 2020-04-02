@@ -32,3 +32,9 @@ node_modules
 # static files generated via npm
 static
 .checksum
+
+# secrets
+secrets/secrets.sh
+rootfs/etc/ssl/cacert.pem
+rootfs/etc/ssl/certs/dhparam.pem
+rootfs/etc/ssl/privkey.pem
