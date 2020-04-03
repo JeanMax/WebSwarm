@@ -1,9 +1,7 @@
-image: ubuntu/lts
+image: archlinux
 # shell: true
 packages:
-  - python3
-  - python3-pip
-  - python3-venv
+  - python
   - npm
 sources:
   - git@git.sr.ht:~jean-max/WebShell
@@ -49,3 +47,8 @@ tasks:
       cd $PROJECT
       make test
       timeout 10 ./runserver.sh || test $? = 124
+
+  # TODO: handle SECRET_PASSWORD
+  # - deploy: |
+  #     cd $PROJECT
+  #     ./deploy.sh

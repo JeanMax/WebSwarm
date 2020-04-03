@@ -1,0 +1,10 @@
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/tmp/gunicorn.sock
+SocketUser=superuser3000
+SocketGroup=http
+
+[Install]
+WantedBy=sockets.target

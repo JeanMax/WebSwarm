@@ -2,8 +2,9 @@
 
 import sys
 import time
+import os
 
-VERBOSE = 1
+VERBOSE = int(os.environ.get('VERBOSE', 2))
 
 # BLACK = "\033[30;01m"
 RED = "\033[31;01m"
@@ -14,15 +15,6 @@ MAGENTA = "\033[35;01m"
 # CYAN = "\033[36;01m"
 WHITE = "\033[37;01m"
 RESET = "\033[0m"
-
-
-def initLogLevel(verbose, quiet):
-    """Initialize log level based on verbose flag"""
-    global VERBOSE
-    if quiet:
-        VERBOSE = 0
-    elif verbose:
-        VERBOSE = verbose
 
 
 def _log(header, *args, **kwargs):
@@ -55,4 +47,4 @@ def warning(*args):
 def debug(*args):
     """Log a debug (magenta)"""
     if VERBOSE >= 3:
-        _log(MAGENTA + "[DEBUG]", *args)
+        _log(MAGENTA + "[DEBUG]", *args, file=sys.stderr)

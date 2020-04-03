@@ -1,0 +1,21 @@
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=superuser3000
+Group=http
+WorkingDirectory=/home/superuser3000/rmrf
+Environment="VERBOSE=3"
+ExecStart=/home/superuser3000/rmrf/run_with_env.sh \
+    gunicorn \
+    --access-logfile - \
+    --worker-class eventlet \
+    --workers 1 \
+    --bind unix:/tmp/gunicorn.sock \
+    --name rmrf \
+    WebShell:app
+
+[Install]
+WantedBy=multi-user.target
