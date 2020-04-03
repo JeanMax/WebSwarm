@@ -35,5 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
     m.route(document.getElementById("root"), "/index", {
         "/index": Index,
         "/chat": Chat,
+        // "/game": Game,
     });
 });

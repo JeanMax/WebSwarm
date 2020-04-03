@@ -45,7 +45,7 @@ function Chat() {
             socket.on("chat_message_log", function(msg) {
                 console.log("chat msg received:" + JSON.stringify(msg)); // DEBUG
                 g_chat_logs.push(msg);
-                setTimeout(m.redraw, 50);
+                setTimeout(m.redraw, 1); //TODO: iiiiirk UGLY
             });
 
             document.addEventListener("keydown", function (event) {

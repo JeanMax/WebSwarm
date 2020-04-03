@@ -46,17 +46,19 @@ function LoginModal() {
     }
 
     return {
-        oninit: function() {
+        oncreate: function() {
+            var modal = document.getElementById("login-modal");
             document.addEventListener("keydown", function (event) {
+                if (!modal.classList.value.includes("is-active")) {
+                    return;
+                }
                 var e = event || window.event;
                 if (e.keyCode === 27) {
                     close_modal();
-                } else if (e.keyCode == 13
-                           && document.getElementById("login-modal")
-                    .classList.value.includes("is-active")) {
-                        login();
-                        m.redraw();
-                    }
+                } else if (e.keyCode === 13) {
+                    login();
+                    m.redraw();
+                }
             });
         },
 

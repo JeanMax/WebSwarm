@@ -43,7 +43,8 @@ watch_build() {
 
 . run_with_env.sh
 export FLASK_ENV=development
+# test "$VERBOSE" || export VERBOSE=3
 
 watch_build &
 # FLASK_APP=src/WebShell/app.py flask run
-VERBOSE=3 webshell
+webshell
