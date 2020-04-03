@@ -2,12 +2,7 @@
 
 A website acting as a remote shell.
 
-
-
-#### Builds:
-
-* [![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?) - archlinux
-* [![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/ubuntu.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/ubuntu.yml?) - ubuntu
+[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml.svg)](https://builds.sr.ht/~jean-max/WebShell/archlinux.yml?) - archlinux build
 
 
 ## Usage:
