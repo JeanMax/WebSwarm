@@ -49,3 +49,7 @@ tasks:
       cd $PROJECT
       make test
       timeout 10 ./runserver.sh || test $? = 124
+
+  - deploy: |
+      cd $PROJECT
+      ./deploy.sh

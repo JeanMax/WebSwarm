@@ -20,22 +20,23 @@ handle_secrets() {
     if ! test $SECRET_PASSWORD; then
         echo "SECRET_PASSWORD isn't set, gpg secrets won't be handled"
         set -x
-        . $RUNNER_SCRIPT
-        return
-    fi
-    set -x
-
-    for secret in $(find . -name '*.gpg'); do
-        dst="${secret/.gpg/}"
-        trash_it "$dst"
-        set +x  # ushhh
-        echo "Decrypting secret: $secret -> $dst"
-        gpg --batch --passphrase $SECRET_PASSWORD \
-            -o "$dst" -d "$secret"
+    else
         set -x
-    done
+        for secret in $(find . -name '*.gpg'); do
+            dst="${secret/.gpg/}"
+            trash_it "$dst"
+            set +x  # ushhh
+            echo "Decrypting secret: $secret -> $dst"
+            gpg --batch --passphrase $SECRET_PASSWORD \
+                -o "$dst" -d "$secret"
+            set -x
+        done
+    fi
 
+    set +x  # ushhh
+    echo "Sourcing venv"
     . $RUNNER_SCRIPT
+    set -x
 }
 
 create_gunicorn_user() {
