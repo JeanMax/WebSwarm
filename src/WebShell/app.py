@@ -8,13 +8,23 @@ import WebShell.log as log
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'not so secret...')
-socketio = SocketIO(app, logger=int(os.environ.get('VERBOSE', 2)) > 1)
+socketio = SocketIO(
+    app,
+    logger=int(os.environ.get('VERBOSE', 2)) > 1,
+    engineio_logger=int(os.environ.get('VERBOSE', 2)) > 1
+    # async_mode='eventlet',
+    # cors_allowed_origins='*'
+)
 
 
 # INDEX: static html
 
 @app.route('/')
 def index():
+    """
+    This is just used with the dev server,
+    otherwise nginx will return the static html file
+    """
     return current_app.send_static_file('index.html')
 
 
@@ -47,7 +57,6 @@ def on_logout(json):
 @socketio.on('connect')
 def on_connect():
     log.info('Client connected')
-    emit('my response', {'data': 'Connected'})
 
 
 @socketio.on('disconnect')

@@ -47,4 +47,4 @@ def warning(*args):
 def debug(*args):
     """Log a debug (magenta)"""
     if VERBOSE >= 3:
-        _log(MAGENTA + "[DEBUG]", *args)
+        _log(MAGENTA + "[DEBUG]", *args, file=sys.stderr)
