@@ -29,7 +29,7 @@ install:
 	$(MAKE) front-install
 	$(MAKE) front-deploy-prod
 
-dev: front-install
+dev:
 	$(PIP_INSTALL) .[dev]
 	$(PIP_INSTALL) --editable .
 	$(MAKE) front-install
@@ -47,7 +47,7 @@ reinstall: uninstall
 
 # FRONT ASSETS
 front-install:
-	npm install
+	test -e node_modules || npm install
 
 front-deploy:
 	npm start

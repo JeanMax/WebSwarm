@@ -46,4 +46,4 @@ export FLASK_ENV=development
 
 watch_build &
 # FLASK_APP=src/WebShell/app.py flask run
-webshell
+VERBOSE=3 webshell

@@ -7,7 +7,7 @@ After=network.target
 User=superuser3000
 Group=http
 WorkingDirectory=/home/superuser3000/rmrf
-# Environment="KEY=t"
+Environment="VERBOSE=3"
 ExecStart=/home/superuser3000/rmrf/run_with_env.sh \
     gunicorn \
     --access-logfile - \
@@ -15,7 +15,7 @@ ExecStart=/home/superuser3000/rmrf/run_with_env.sh \
     --workers 1 \
     --bind unix:/tmp/gunicorn.sock \
     --name rmrf \
-    webshell
+    WebShell:app
 
 [Install]
 WantedBy=multi-user.target

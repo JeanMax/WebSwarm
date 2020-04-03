@@ -8,4 +8,6 @@ test "$VIRTUAL_ENV" || . $VENV_DIR/bin/activate
 
 . $SECRETS
 
-test "$1" && ${@:1} || true
+if test "$1"; then
+    ${@:1}
+fi

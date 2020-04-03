@@ -8,8 +8,7 @@ import WebShell.log as log
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'not so secret...')
-socketio = SocketIO(app)
-log.initLogLevel(verbose=3, quiet=False)
+socketio = SocketIO(app, logger=int(os.environ.get('VERBOSE', 2)) > 1)
 
 
 # INDEX: static html

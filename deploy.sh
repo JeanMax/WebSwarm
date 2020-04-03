@@ -12,6 +12,7 @@ TRASH=$HOME/.local/share/Trash/files
 STATIC_DIR=/srv/http/static
 
 RUNNER_SCRIPT=run_with_env.sh
+INSTALL_LOCK=.installed
 
 
 handle_secrets() {
@@ -80,7 +81,9 @@ copy_rootfs() {
 }
 
 run_as_project_user() {
-    sudo su $GUNICORN_USER -c "cd /home/$GUNICORN_USER/$PROJECT && $1"
+    sudo su $GUNICORN_USER -c "
+cd /home/$GUNICORN_USER/$PROJECT
+./$RUNNER_SCRIPT $1"
 }
 
 sync_project() {
@@ -88,22 +91,18 @@ sync_project() {
     sudo rsync -a --delete \
          --exclude .git \
          --exclude .gitignore \
-         --exclude README.md \
          --exclude LICENSE \
-         --exclude package.json \
-         --exclude package-lock.json \
          --exclude .builds \
          --exclude .checksum \
          --exclude .eggs \
-         --exclude node_modules \
          --exclude .pytest_cache \
          --exclude runserver.sh \
          --exclude deploy.sh \
          --exclude tests \
+         --exclude $INSTALL_LOCK \
+         --exclude .venv \
          ./$1 \
          /home/$GUNICORN_USER/$PROJECT/.
-
-    # TODO: just sync venv?
 }
 
 sync_static() {
@@ -117,18 +116,21 @@ create_gunicorn_user() {
 
 
 handle_secrets
-create_gunicorn_user
+test -e $INSTALL_LOCK || create_gunicorn_user
 sync_project rootfs
 copy_rootfs
-start_services nginx gunicorn
-create_venv
-make install
+sudo systemctl daemon-reload
+test -e $INSTALL_LOCK || start_services nginx gunicorn
+test -e $INSTALL_LOCK || make
+test -e $INSTALL_LOCK || make check
 
 # broke
 sync_project
 sync_static
 chown_project
-sudo systemctl enable nginx.service gunicorn.socket
-sudo systemctl daemon-reload
+test -e $INSTALL_LOCK || run_as_project_user "make install"
+test -e $INSTALL_LOCK || sudo systemctl enable nginx.service gunicorn.socket
 sudo systemctl restart {nginx,gunicorn}.service
 # ekorb
+
+mkdir -p $INSTALL_LOCK
