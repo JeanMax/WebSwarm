@@ -38,17 +38,21 @@ handle_secrets() {
     . $RUNNER_SCRIPT
 }
 
+create_gunicorn_user() {
+    id $GUNICORN_USER || sudo useradd -m -g $HTTP_GROUP $GUNICORN_USER
+}
+
+run_as_project_user() {
+    sudo su $GUNICORN_USER -c "
+cd /home/$GUNICORN_USER/$PROJECT
+./$RUNNER_SCRIPT $1"
+}
+
 start_services() {
     for s in $@; do
         systemctl status $s.service | grep -q 'Active: active' \
             || sudo systemctl start $s.service
     done
-}
-
-chown_project() {
-    sudo chown -R $GUNICORN_USER:$HTTP_GROUP /home/$GUNICORN_USER/$PROJECT
-    sudo chown -R $NGINX_USER:$HTTP_GROUP /srv/http/static
-    sudo chown -R root:root /home/$GUNICORN_USER/$PROJECT/rootfs
 }
 
 trash_it() {
@@ -78,12 +82,8 @@ copy_rootfs() {
         trash_it $dst
         sudo ln -sv $src $dst
     done
-}
 
-run_as_project_user() {
-    sudo su $GUNICORN_USER -c "
-cd /home/$GUNICORN_USER/$PROJECT
-./$RUNNER_SCRIPT $1"
+    sudo systemctl daemon-reload
 }
 
 sync_project() {
@@ -103,15 +103,16 @@ sync_project() {
          --exclude .venv \
          ./$1 \
          /home/$GUNICORN_USER/$PROJECT/.
+    sudo chown -R $GUNICORN_USER:$HTTP_GROUP /home/$GUNICORN_USER/$PROJECT
+    sudo chown -R root:root /home/$GUNICORN_USER/$PROJECT/rootfs
 }
 
 sync_static() {
     sudo mkdir -p $STATIC_DIR
-    sudo rsync -a $(find src -name static)/ $STATIC_DIR  # --delete?
-}
-
-create_gunicorn_user() {
-    id $GUNICORN_USER || sudo useradd -m -g $HTTP_GROUP $GUNICORN_USER
+    sudo rsync -a --delete \
+         $(sudo find /home/$GUNICORN_USER/$PROJECT/src -name static)/ \
+         $STATIC_DIR  # --delete?
+    sudo chown -R $NGINX_USER:$HTTP_GROUP /srv/http/static
 }
 
 
@@ -119,16 +120,14 @@ handle_secrets
 test -e $INSTALL_LOCK || create_gunicorn_user
 sync_project rootfs
 copy_rootfs
-sudo systemctl daemon-reload
 test -e $INSTALL_LOCK || start_services nginx gunicorn
 test -e $INSTALL_LOCK || make
 test -e $INSTALL_LOCK || make check
 
 # broke
-sync_project
-sync_static
-chown_project
+test -e $INSTALL_LOCK || sync_project
 test -e $INSTALL_LOCK || run_as_project_user "make install"
+test -e $INSTALL_LOCK || sync_static
 test -e $INSTALL_LOCK || sudo systemctl enable nginx.service gunicorn.socket
 sudo systemctl restart {nginx,gunicorn}.service
 # ekorb

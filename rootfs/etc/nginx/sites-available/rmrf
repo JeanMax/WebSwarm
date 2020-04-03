@@ -22,8 +22,8 @@ server {
 
 server {
     server_name 174.138.11.10;
-    listen 443 http2 ssl;
-    listen [::]:443 http2 ssl;
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
 
     access_log off;
     server_tokens off; # Enables or disables emitting nginx version on error pages and in the "Server" response header field.
@@ -51,16 +51,18 @@ server {
     add_header Content-Security-Policy "default-src 'self';";
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Permitted-Cross-Domain-Policies "master-only";
-    add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker self;vibrate none;fullscreen self;payment none;";
+    add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker none;vibrate none;fullscreen none;payment none;";
     add_header Referrer-Policy "strict-origin";
     add_header Expect-CT "enforce, max-age=300, report-uri='https://rmrf.fr/INVALID-CERTIFICATE'";
-
+    add_header Access-Control-Allow-Origin 'https://rmrf.fr';
+    add_header Cache-Control "public, max-age=31536000";
+    add_header Strict-Transport-Security max-age=31536000;
 
     location /static/ {
         root /srv/http/;
 
-        expires 30d;
-        add_header Cache-Control "public";
+        expires 1y;
+        access_log off;
     }
 
     location / {
@@ -69,8 +71,7 @@ server {
         root /srv/http/;
         rewrite ^ /static/index.html break;
 
-        expires 30d;
-        add_header Cache-Control "public";
+        expires 1y;
 
         proxy_set_header   Host $host;
         proxy_set_header   X-Real-IP $remote_addr;
