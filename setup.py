@@ -150,6 +150,7 @@ setup(
         'flask',
         'flask-socketio',
         'eventlet',
+        'gunicorn',
     ],
 
     # List additional groups of dependencies here (e.g. development

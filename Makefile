@@ -24,12 +24,16 @@ RM = rm -rfv
 # INSTALL
 $(NAME): dev
 
-install: front-install
+install:
 	$(PIP_INSTALL) .
+	$(MAKE) front-install
+	$(MAKE) front-deploy-prod
 
-dev: front-install
+dev:
 	$(PIP_INSTALL) .[dev]
 	$(PIP_INSTALL) --editable .
+	$(MAKE) front-install
+	$(MAKE) front-deploy
 
 clean:
 	$(RM) $(TMP_FILES)
@@ -43,14 +47,19 @@ reinstall: uninstall
 
 # FRONT ASSETS
 front-install:
-	npm install
-	$(MAKE) front-deploy
+	test -e node_modules || npm install
 
 front-deploy:
 	npm start
 
+front-deploy-prod:
+	npm run deploy
+
 
 # LINT && TEST
+eslint:
+	npm run lint
+
 lint:
 	find $(SRC_DIR) -name \*.py | grep -vE '\.#|flycheck_|eggs' | xargs $(LINTER)
 
@@ -63,7 +72,8 @@ test:
 todo:
 	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.builds|flycheck_|\./\.venv|\./\.pytest_cache|\./node_modules)'
 
-check: lint flake test todo
+check: lint flake test eslint
+	$(MAKE) todo || true
 
 
 # Avoid collisions between rules and files

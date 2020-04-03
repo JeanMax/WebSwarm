@@ -41,11 +41,9 @@ watch_build() {
 }
 
 
-test "$VIRTUAL_ENV" || . .venv/bin/activate
-
+. run_with_env.sh
 export FLASK_ENV=development
-export SECRET_KEY=pouet
 
 watch_build &
 # FLASK_APP=src/WebShell/app.py flask run
-webshell
+VERBOSE=3 webshell

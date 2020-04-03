@@ -1,8 +1,6 @@
-'use strict';
-
 var socket = io();
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
     socket.on("connect", function() {
         console.log("Socket connected!"); // DEBUG
         socket.emit("custom_event", {data: "I'm in!"});

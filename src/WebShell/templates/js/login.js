@@ -1,13 +1,12 @@
-
 function open_modal() {
-    document.documentElement.classList.add('is-clipped');
-    document.getElementById("login-modal").classList.add('is-active');
+    document.documentElement.classList.add("is-clipped");
+    document.getElementById("login-modal").classList.add("is-active");
 }
 
 
 // TODO: find a way to better scope these previous functions
 
-function LoginModal(initialVnode) {
+function LoginModal() {
 
     function is_valid_username(s) {
         return /^\w{2,}$/.test(s);
@@ -47,7 +46,7 @@ function LoginModal(initialVnode) {
     }
 
     return {
-        oninit: function(vnode) {
+        oninit: function() {
             document.addEventListener("keydown", function (event) {
                 var e = event || window.event;
                 if (e.keyCode === 27) {
@@ -61,7 +60,7 @@ function LoginModal(initialVnode) {
             });
         },
 
-        view: function(vnode) {
+        view: function() {
             return (
                 <div class="modal" id="login-modal">
                   <div class="modal-background" onclick={close_modal}></div>

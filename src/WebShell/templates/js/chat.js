@@ -3,26 +3,24 @@ var g_chat_logs = [
 ];
 
 
-function Message(initialVnode) {
-    return {
-        view: function(vnode) {
-            return (
-                <p style="margin-bottom:0.3em">
-                  <strong>{vnode.attrs.user}:&nbsp;</strong>
-                  {vnode.attrs.msg}
-                </p>
-            );
-        }
-    };
-}
+var Message = {
+    view: function(vnode) {
+        return (
+            <p style="margin-bottom:0.3em">
+              <strong>{vnode.attrs.user}:&nbsp;</strong>
+              {vnode.attrs.msg}
+            </p>
+        );
+    }
+};
 
 
-function Chat(initialVnode) {
+function Chat() {
     var chat_logs = g_chat_logs;
 
     function chat_logs_to_html() {
-        return chat_logs.map(msg => {
-            return <Message user={msg.user} msg={msg.content}/>
+        return chat_logs.map((msg, k) => {
+            return <Message user={msg.user} msg={msg.content} key={k}/>;
         });
     }
 
@@ -43,7 +41,7 @@ function Chat(initialVnode) {
     }
 
     return {
-        oninit: function(vnode) {
+        oninit: function() {
             socket.on("chat_message_log", function(msg) {
                 console.log("chat msg received:" + JSON.stringify(msg)); // DEBUG
                 g_chat_logs.push(msg);
@@ -60,12 +58,12 @@ function Chat(initialVnode) {
 
         },
 
-        onupdate: function(vnode) {
+        onupdate: function() {
             var msg_box = document.getElementById("message-logs");
             msg_box.scrollTop = msg_box.scrollHeight;
         },
 
-        view: function(vnode) {
+        view: function() {
             return (
                 <div class="columns is-centered">
                   <div class="box">

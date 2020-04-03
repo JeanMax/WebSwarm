@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var g_username;
 
@@ -13,7 +13,7 @@ var Main =  {
             </div>
         );
     }
-}
+};
 
 
 var Index =  {
@@ -22,13 +22,13 @@ var Index =  {
             <h1 class="title">Hello World!</h1>
         );
     }
-}
+};
 
 
 var Link = m.route.Link;
 
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
     g_username = get_cookie("user");
 
     m.mount(document.body, Main);

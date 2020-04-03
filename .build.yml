@@ -40,9 +40,15 @@ tasks:
       cd $PROJECT
       make flake
       make lint
+      make eslint
       make todo || true
 
   - test: |
       cd $PROJECT
       make test
       timeout 10 ./runserver.sh || test $? = 124
+
+  # TODO: handle SECRET_PASSWORD
+  # - deploy: |
+  #     cd $PROJECT
+  #     ./deploy.sh

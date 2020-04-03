@@ -1,11 +1,11 @@
-function Navbar(initialVnode) {
+function Navbar() {
 
     function toggle_navbar() {
         var navbar = document.getElementById("super-navbar"),
             burger = document.getElementById("super-burger");
 
-        navbar.classList.toggle('is-active');
-        burger.classList.toggle('is-active');
+        navbar.classList.toggle("is-active");
+        burger.classList.toggle("is-active");
     }
 
     function logout() {
@@ -15,8 +15,7 @@ function Navbar(initialVnode) {
     }
 
     return {
-
-        view: function(vnode) {
+        view: function() {
             return (
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                   <div class="navbar-brand">
