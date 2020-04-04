@@ -44,7 +44,8 @@ function Navbar() {
                             <a class="button is-warning" onclick={logout}><strong>Log out</strong></a>
                             <div class="navbar-item"><strong>User:&nbsp;</strong>{g_username}</div>
                           </>
-                        : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>}
+                        : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>
+                          }
                         </div>
                       </div>
                     </div>

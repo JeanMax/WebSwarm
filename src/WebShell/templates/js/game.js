@@ -2,13 +2,14 @@
  * the game rendering idea is heavily inspired (stolen) from:
  * https://github.com/kiki727/geMithril
  */
+const WIDTH = 250;
+const HEIGHT = 500;
+
 
 function Game(initial_vnode) {
     let is_running = false;
     let fps = 0;
     const times = [];
-    const width = 250;
-    const height = 500;
 
     function start() {
         console.log("start!");
@@ -48,15 +49,21 @@ function Game(initial_vnode) {
                 <div onclick={(e)=>e.preventDefault()}>
                   <div class="box has-text-centered">
                     <p class="content">{fps} fps</p>
-                    <div class="columns is-mobile is-centered">
-                      <div class="column is-half" id="game" style={"width:" + width + "px;height:" + height + "px;background-color:black"}></div>
-                   </div>
+                    <figure id="game" class="image is-1by2" style={"width:" + WIDTH + "px;height:" + HEIGHT + "px"}>
+                      <img src="https://bulma.io/images/placeholders/320x640.png"/>
+                    </figure>
+                    <br />
                       {is_running ?
                       <a class="button is-warning" onclick={stop}>Stop!</a>
-                    : <a class="button is-success" onclick={start}>Start!</a>}
+                    : <a class="button is-success" onclick={start}>Start!</a>
+                      }
+                      &nbsp;
+                      <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
                   </div>
                 </div>
             );
         }
     };
 }
+
+// style={"width:" + WIDTH + "px;height:" + HEIGHT + "px"}

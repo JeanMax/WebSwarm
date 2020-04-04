@@ -21,15 +21,15 @@ build_all() {
 
 	css=$(find src -regex '.*\.s?css$' | grep -vE '\.#|static')
 	up_to_date $checksum_dir/css.sha1 $css \
-		|| npm run-script css-deploy
+		|| (npm run-script css-deploy && echo '--- css deployed! ---')
 
 	js=$(find src -name '*.js' | grep -vE '\.#|static')
 	up_to_date $checksum_dir/js.sha1 $js \
-		|| npm run-script js-deploy
+		|| (npm run-script js-deploy && echo '--- js deployed! ---')
 
 	html=$(find src -name '*.html' | grep -vE '\.#|static')
 	up_to_date $checksum_dir/html.sha1 $html \
-		|| npm run-script html-deploy
+		|| (npm run-script html-deploy && echo '--- html deployed! ---')
 }
 
 watch_build() {

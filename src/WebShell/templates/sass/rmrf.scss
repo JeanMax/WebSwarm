@@ -78,7 +78,7 @@ $success: $green;
 
 
 
-@import 'icon-embedded';
+// @import 'icon-embedded';
 
 
 // fix horizontal box spacing
@@ -100,4 +100,57 @@ $success: $green;
 // table
 .table-wrapper {
     overflow-x: auto;
+}
+
+
+// game
+#game{
+    background: #252525;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#game img {
+    width: 100%;
+    height: auto;
+}
+
+
+// fullscreen: full width background color
+#game:fullscreen {
+    width: 100%;
+}
+
+#game:-webkit-full-screen {
+    width: 100%;
+}
+
+#game:-moz-full-screen {
+    width: 100%;
+}
+
+#game:-ms-fullscreen {
+    width: 100%;
+}
+
+
+// fullscreen: full height background image
+#game:fullscreen img {
+    width: auto;
+    height: 100vh;
+}
+
+#game:-webkit-full-screen img {
+    width: auto;
+    height: 100vh;
+}
+
+#game:-moz-full-screen img {
+    width: auto;
+    height: 100vh;
+}
+
+#game:-ms-fullscreen img {
+    width: auto;
+    height: 100vh;
 }
