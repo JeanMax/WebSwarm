@@ -2,6 +2,8 @@
 
 var g_username;
 
+var Link = m.route.Link;
+
 var Main =  {
     view: function() {
         return (
@@ -15,7 +17,6 @@ var Main =  {
     }
 };
 
-
 var Index =  {
     view: function() {
         return (
@@ -25,9 +26,6 @@ var Index =  {
 };
 
 
-var Link = m.route.Link;
-
-
 document.addEventListener("DOMContentLoaded", function () {
     g_username = get_cookie("user");
 
@@ -35,6 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
     m.route(document.getElementById("root"), "/index", {
         "/index": Index,
         "/chat": Chat,
-        // "/game": Game,
+        "/game": Game,
     });
 });

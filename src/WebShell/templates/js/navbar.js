@@ -1,8 +1,8 @@
 function Navbar() {
 
     function toggle_navbar() {
-        var navbar = document.getElementById("super-navbar"),
-            burger = document.getElementById("super-burger");
+        const navbar = document.getElementById("super-navbar");
+        const burger = document.getElementById("super-burger");
 
         navbar.classList.toggle("is-active");
         burger.classList.toggle("is-active");
@@ -44,8 +44,7 @@ function Navbar() {
                             <a class="button is-warning" onclick={logout}><strong>Log out</strong></a>
                             <div class="navbar-item"><strong>User:&nbsp;</strong>{g_username}</div>
                           </>
-                        : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>
-                          }
+                        : <a class="button is-light modal-button" onclick={open_modal}>Log in</a>}
                         </div>
                       </div>
                     </div>
