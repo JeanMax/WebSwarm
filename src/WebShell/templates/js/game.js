@@ -50,7 +50,7 @@ function Game(initial_vnode) {
                   <div class="box has-text-centered">
                     <p class="content">{fps} fps</p>
                     <figure id="game" class="image is-1by2" style={"width:" + WIDTH + "px;height:" + HEIGHT + "px"}>
-                      <img src="https://bulma.io/images/placeholders/320x640.png"/>
+                      <img src="/static/img/favicon.ico"/>
                     </figure>
                     <br />
                       {is_running ?
