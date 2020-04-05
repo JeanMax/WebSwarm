@@ -43,29 +43,14 @@ function get_fullscreen_element() {
 }
 
 function request_fullscreen(el) {
-    var d = document.getElementById("fps"), // DEBUG
-        t = "";                             // DEBUG
 
-
-
-    const m = _get_request_fullscreen_method(el);
-
-    t += "fs_met: " + m;        // DEBUG
-    d.textContent = t;          // DEBUG
-
-    if (m) {
-        const r = m.call(el);
-        t += " --- fs_met_call: " + r; // DEBUG
-        d.textContent = t;          // DEBUG
-
-
-        if (!r || !get_fullscreen_element()) {
-            return _fullscreen_hack(el);
-        }
-        t += " --- fs_el: " + get_fullscreen_element(); // DEBUG
-        d.textContent = t;          // DEBUG
+    try {
+        const m = _get_request_fullscreen_method(el);
+        m ? m.call(el) : _fullscreen_hack(el);
+    } catch(e) {
+        document.getElementById("fps").textContent =  e.toString();      // DEBUG
+        _fullscreen_hack(el);
     }
-    return _fullscreen_hack(el);
 }
 
 // function exit_fullscreen(el) {
