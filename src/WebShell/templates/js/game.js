@@ -31,16 +31,26 @@ function create_vectors(n) {
 
 function Game(initial_vnode) {
     let is_running = false;
+
+    let show_fps = false;
     let fps = 0;
     const times = [];
+    // let prev_timestamp = 0;
+    // let now = 0;
 
     const max_unit = 80;
     const vectors = create_vectors(max_unit);
 
+    function units_to_html() {
+        return vectors.map((v, k) => {
+            return <Unit vector={v} key={k}/>;
+        });
+    }
+
     function start() {
         console.log("start!");
         is_running = true;
-        initial_vnode.dom.click();
+        m.redraw();
     }
 
     function stop() {
@@ -55,12 +65,8 @@ function Game(initial_vnode) {
         }
         times.push(now);
         fps = times.length;
-    }
-
-    function units_to_html() {
-        return vectors.map((v, k) => {
-            return <Unit vector={v} key={k}/>;
-        });
+        // const this_fps = parseInt((1000 / (now - prev_timestamp)));
+        // prev_timestamp = now;
     }
 
     function play_frame() {
@@ -72,39 +78,49 @@ function Game(initial_vnode) {
     return {
         onupdate: function(vnode) {
             if (is_running) {
-                count_fps();
+                if (show_fps) {
+                    count_fps();
+                }
                 play_frame();
-                vnode.dom.click(); // loop!
+                m.redraw();  //loop!
             }
         },
 
         view: function() {
             return (
-                <div onclick={(e)=>e.preventDefault()}>
-                  <div class="box has-text-centered">
+                <div class="box has-text-centered">
 
-                    <div id="game">
-                      <div class="layer" id="layer-background">
-                        <img src="/static/img/background.jpg"/>
-                      </div>
-
-                      <div class="layer" id="layer-unit">
-                        {units_to_html()}
-                      </div>
-
-                      <div class="layer" id="layer-info">
-                        <p class="content" id="fps">{fps} fps</p>
-                      </div>
+                  <div id="game">
+                    <div class="layer" id="layer-background">
                     </div>
 
-                    <br />
-                    {is_running ?
-                     <a class="button is-warning" onclick={stop}>Stop!</a>
-                     : <a class="button is-success" onclick={start}>Start!</a>
-                    }
-                    &nbsp;
-                    <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
+                    <div class="layer" id="layer-unit">
+                      {units_to_html()}
+                    </div>
+
+                    <div class="layer" id="layer-info">
+                      <p class="content" id="fps">{show_fps ? fps + " fps" : ""}</p>
+                    </div>
                   </div>
+
+                  <br />
+                  <div class="columns">
+                    <div class="column">
+                      <a class="button is-info" onclick={()=> show_fps = !show_fps}>{show_fps ? "Hide" : "Show"} fps</a>
+                    </div>
+
+                    <div class="column">
+                      {is_running ?
+                       <a class="button is-warning" onclick={stop}>Stop!</a>
+                       : <a class="button is-success" onclick={start}>Start!</a>
+                      }
+                    </div>
+
+                    <div class="column">
+                      <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
+                    </div>
+                  </div>
+
                 </div>
             );
         }

@@ -106,6 +106,9 @@ $success: $green;
 
 #layer-background {
     z-index: 1;
+    background-image: url('/static/img/background.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #layer-unit {
@@ -152,10 +155,6 @@ $success: $green;
     top: 50%;
     transform: translate(0, -50%);
 }
-#game:fullscreen #layer-background img {
-    width: 100%;
-    height: auto;
-}
 
 #game:-webkit-full-screen #layer-info {
     width: 100vw;
@@ -174,10 +173,6 @@ $success: $green;
     height: 56.5vw;
     top: 50%;
     transform: translate(0, -50%);
-}
-#game:-webkit-full-screen #layer-background img {
-    width: 100%;
-    height: auto;
 }
 
 #game:-moz-full-screen #layer-info {
@@ -198,10 +193,6 @@ $success: $green;
     top: 50%;
     transform: translate(0, -50%);
 }
-#game:-moz-full-screen #layer-background img {
-    width: 100%;
-    height: auto;
-}
 
 #game:-ms-fullscreen #layer-info {
     width: 100vw;
@@ -220,8 +211,4 @@ $success: $green;
     height: 56.5vw;
     top: 50%;
     transform: translate(0, -50%);
-}
-#game:-ms-fullscreen #layer-background img {
-    width: 100%;
-    height: auto;
 }
