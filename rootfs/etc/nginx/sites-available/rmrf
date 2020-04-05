@@ -48,10 +48,10 @@ server {
     add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains; preload' always;
     add_header X-Frame-Options DENY always;
     add_header X-Content-Type-Options nosniff always;
-    add_header Content-Security-Policy "default-src 'self';";  # TODO: this is a little bit overkill
+    # add_header Content-Security-Policy "default-src 'self';";  # TODO: this is blocking some firefox plugin
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Permitted-Cross-Domain-Policies "master-only";
-    add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker none;vibrate none;fullscreen self;payment none;";
+    # add_header Feature-Policy "geolocation none;midi none;notifications none;push none;sync-xhr none;microphone none;camera none;magnetometer none;gyroscope none;speaker none;vibrate none;fullscreen self;payment none;";  # TODO: this is blocking chrom* fullscreen
     add_header Referrer-Policy "strict-origin";
     add_header Expect-CT "enforce, max-age=300, report-uri='https://rmrf.fr/INVALID-CERTIFICATE'";
     add_header Access-Control-Allow-Origin 'https://rmrf.fr';
