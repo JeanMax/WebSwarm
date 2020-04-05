@@ -17,7 +17,7 @@ function Navbar() {
     return {
         view: function() {
             return (
-                <nav class="navbar" role="navigation" aria-label="main navigation">
+                <nav class="navbar" id="navbar" role="navigation" aria-label="main navigation">
                   <div class="navbar-brand">
                     <Link class="navbar-item" href="/index">
                       <img src="/static/img/logo.png" width="96"/>
