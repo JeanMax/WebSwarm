@@ -59,7 +59,7 @@ function Game(initial_vnode) {
                       </div>
 
                       <div class="layer" id="layer-info">
-                        <p class="content">{fps} fps</p>
+                        <p class="content" id="fps">{fps} fps</p>
                       </div>
                     </div>
 

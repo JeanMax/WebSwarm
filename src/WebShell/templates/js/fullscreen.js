@@ -35,16 +35,37 @@ function _get_request_fullscreen_method(el) {
 //     || el.msExitFullscreen;
 // }
 
-// function get_fullscreen_element() {
-//   return document.fullscreenElement
-//     || document.webkitFullscreenElement
-//     || document.mozFullScreenElement
-//     || document.msFullscreenElement;
-// }
+function get_fullscreen_element() {
+  return document.fullscreenElement
+    || document.webkitFullscreenElement
+    || document.mozFullScreenElement
+    || document.msFullscreenElement;
+}
 
 function request_fullscreen(el) {
+    var d = document.getElementById("fps"), // DEBUG
+        t = "";                             // DEBUG
+
+
+
     const m = _get_request_fullscreen_method(el);
-    return m ? m.call(el) : _fullscreen_hack(el);
+
+    t += "fs_met: " + m;        // DEBUG
+    d.textContent = t;          // DEBUG
+
+    if (m) {
+        const r = m.call(el);
+        t += " --- fs_met_call: " + r; // DEBUG
+        d.textContent = t;          // DEBUG
+
+
+        if (!r || !get_fullscreen_element()) {
+            return _fullscreen_hack(el);
+        }
+        t += " --- fs_el: " + get_fullscreen_element(); // DEBUG
+        d.textContent = t;          // DEBUG
+    }
+    return _fullscreen_hack(el);
 }
 
 // function exit_fullscreen(el) {
