@@ -24,7 +24,7 @@ function _fullscreen_hack(el) {
 function _get_request_fullscreen_method(el) {
     return el.requestFullscreen
         || el.mozRequestFullScreen
-        || el.webkitRequestFullscreen
+        || el.webkitRequestFullScreen
         || el.msRequestFullscreen;
 }
 
