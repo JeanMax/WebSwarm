@@ -70,7 +70,7 @@ test:
 	python -Wall $(TESTER)
 
 todo:
-	! grep -rin todo . | grep -vE '^(Binary file|\./\.git|\./Makefile|\./docs|\./setup.py|.*\.egg|\./\.builds|flycheck_|\./\.venv|\./\.pytest_cache|\./node_modules)'
+	! grep -rin todo . | grep -vE "^(Binary file|\./\.git|\./Makefile|\./docs|\./"$(SRC_DIR)/$(NAME)"/static|\./setup.py|.*\.egg|\./\.builds|flycheck_|\./\.venv|\./\.pytest_cache|\./node_modules)|./"$(TEST_DIR)"/.pytest_cache"
 
 check: lint flake test eslint
 	$(MAKE) todo || true
