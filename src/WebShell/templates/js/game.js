@@ -2,8 +2,8 @@
  * the game rendering idea is heavily inspired (stolen) from:
  * https://github.com/kiki727/geMithril
  */
-const WIDTH = 250;
-const HEIGHT = 500;
+const WIDTH = 640;
+const HEIGHT = 360;
 
 
 function Game(initial_vnode) {
@@ -48,22 +48,32 @@ function Game(initial_vnode) {
             return (
                 <div onclick={(e)=>e.preventDefault()}>
                   <div class="box has-text-centered">
-                    <p class="content">{fps} fps</p>
-                    <figure id="game" class="image is-1by2" style={"width:" + WIDTH + "px;height:" + HEIGHT + "px"}>
-                      <img src="/static/img/favicon.ico"/>
-                    </figure>
+
+                    <div id="game">
+                      <div class="layer" id="layer-background">
+                      </div>
+
+                      <div class="layer" id="layer-unit">
+                        <div class="unit" id="unit1"></div>
+                        <div class="unit" id="unit2" style="left:10%;top:60%"></div>
+                        <div class="unit" id="unit2" style="left:70%;top:90%"></div>
+                      </div>
+
+                      <div class="layer" id="layer-info">
+                        <p class="content">{fps} fps</p>
+                      </div>
+                    </div>
+
                     <br />
-                      {is_running ?
-                      <a class="button is-warning" onclick={stop}>Stop!</a>
-                    : <a class="button is-success" onclick={start}>Start!</a>
-                      }
-                      &nbsp;
-                      <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
+                    {is_running ?
+                     <a class="button is-warning" onclick={stop}>Stop!</a>
+                     : <a class="button is-success" onclick={start}>Start!</a>
+                    }
+                    &nbsp;
+                    <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
                   </div>
                 </div>
             );
         }
     };
 }
-
-// style={"width:" + WIDTH + "px;height:" + HEIGHT + "px"}

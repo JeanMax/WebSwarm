@@ -82,55 +82,83 @@ $success: $green;
 
 
 // game
-#game{
-    background: #252525;
+
+
+#game {
+    position: relative;
+    padding-bottom: 56.25%;
     margin-left: auto;
     margin-right: auto;
-    max-width: 100%;
-    max-height: 100%;
 }
 
-#game img {
+.layer {
+    position: absolute;
     width: 100%;
-    height: auto;
+    height: 100%;
+}
+
+#layer-background {
+    z-index: 1;
+    background-image: url('/static/img/background.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#layer-unit {
+    z-index: 2;
+    background: transparent!important;
+}
+
+#layer-info {
+    z-index: 3;
+    background: transparent!important;
 }
 
 
-// fullscreen: full width background color
-#game:fullscreen {
-    width: 100%;
-}
-
-#game:-webkit-full-screen {
-    width: 100%;
-}
-
-#game:-moz-full-screen {
-    width: 100%;
-}
-
-#game:-ms-fullscreen {
-    width: 100%;
+.unit {
+    position: absolute;
+    width: 2.825%;
+    height: 5%;
+    background-color: red;
 }
 
 
-// fullscreen: full height background image
-#game:fullscreen img {
-    width: auto;
-    height: 100vh;
-}
 
-#game:-webkit-full-screen img {
-    width: auto;
-    height: 100vh;
-}
+// // fullscreen: full width background color
+// #game:fullscreen #layer-background {
+//     width: 100%;
+// }
 
-#game:-moz-full-screen img {
-    width: auto;
-    height: 100vh;
-}
+// #game:-webkit-full-screen #layer-background {
+//     width: 100%;
+// }
 
-#game:-ms-fullscreen img {
-    width: auto;
-    height: 100vh;
-}
+// #game:-moz-full-screen #layer-background {
+//     width: 100%;
+// }
+
+// #game:-ms-fullscreen #layer-background {
+//     width: 100%;
+// }
+
+
+// // fullscreen: full height background image
+// #game:fullscreen img {
+//     width: auto;
+//     height: 100vh;
+// }
+
+// #game:-webkit-full-screen img {
+//     width: auto;
+//     height: 100vh;
+// }
+
+// #game:-moz-full-screen img {
+//     width: auto;
+//     height: 100vh;
+// }
+
+// #game:-ms-fullscreen img {
+//     width: auto;
+//     height: 100vh;
+// }
