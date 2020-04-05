@@ -47,6 +47,7 @@ function request_fullscreen(el) {
     try {
         const m = _get_request_fullscreen_method(el);
         m ? m.call(el) : _fullscreen_hack(el);
+        setTimeout(() => get_fullscreen_element() || _fullscreen_hack(el), 500);
     } catch(e) {
         document.getElementById("fps").textContent =  e.toString();      // DEBUG
         _fullscreen_hack(el);
