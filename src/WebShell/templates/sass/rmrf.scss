@@ -122,9 +122,13 @@ $success: $green;
 .unit {
     z-index: 2;
     position: absolute;
-    width: 2.825%;
-    height: 5%;
-    background-color: red;
+    // width: 2.825%;
+    // height: 5%;
+
+    // background-color: red;
+    background-image: url('/static/img/favicon.ico');
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 

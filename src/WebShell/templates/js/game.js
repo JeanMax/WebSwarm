@@ -3,10 +3,39 @@
  * https://github.com/kiki727/geMithril
  */
 
+
+var Unit = {
+    view: function(vnode) {
+        const v = vnode.attrs.vector;
+        return (
+            <div class="unit"
+                 style={"left:" + v.x + "%;" +
+                        "top:" + v.y + "%;" +
+                        "width:" + (v.w * 0.565) + "%;" +
+                        "height:" + v.h + "%"}>
+            </div>
+        );
+    }
+};
+
+
+function create_vectors(n) {
+    const vectors = [];
+    for (let i = 0; i < n; i++) {
+        vectors.push(RandomVector());
+    }
+    return vectors;
+}
+
+
+
 function Game(initial_vnode) {
     let is_running = false;
     let fps = 0;
     const times = [];
+
+    const max_unit = 80;
+    const vectors = create_vectors(max_unit);
 
     function start() {
         console.log("start!");
@@ -28,8 +57,16 @@ function Game(initial_vnode) {
         fps = times.length;
     }
 
+    function units_to_html() {
+        return vectors.map((v, k) => {
+            return <Unit vector={v} key={k}/>;
+        });
+    }
+
     function play_frame() {
-        console.log("zboub");
+        vectors.forEach(v => {
+            move(v);
+        });
     }
 
     return {
@@ -52,10 +89,7 @@ function Game(initial_vnode) {
                       </div>
 
                       <div class="layer" id="layer-unit">
-                        <div class="unit" id="unit1"></div>
-                        <div class="unit" id="unit2" style="left:10%;top:60%"></div>
-                        <div class="unit" id="unit2" style="left:70%;top:90%"></div>
-                        <div class="unit" id="unit2" style="left:30%;top:95%"></div>
+                        {units_to_html()}
                       </div>
 
                       <div class="layer" id="layer-info">
