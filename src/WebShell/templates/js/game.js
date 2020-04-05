@@ -2,9 +2,6 @@
  * the game rendering idea is heavily inspired (stolen) from:
  * https://github.com/kiki727/geMithril
  */
-const WIDTH = 640;
-const HEIGHT = 360;
-
 
 function Game(initial_vnode) {
     let is_running = false;
@@ -51,12 +48,14 @@ function Game(initial_vnode) {
 
                     <div id="game">
                       <div class="layer" id="layer-background">
+                        <img src="/static/img/background.jpg"/>
                       </div>
 
                       <div class="layer" id="layer-unit">
                         <div class="unit" id="unit1"></div>
                         <div class="unit" id="unit2" style="left:10%;top:60%"></div>
                         <div class="unit" id="unit2" style="left:70%;top:90%"></div>
+                        <div class="unit" id="unit2" style="left:30%;top:95%"></div>
                       </div>
 
                       <div class="layer" id="layer-info">

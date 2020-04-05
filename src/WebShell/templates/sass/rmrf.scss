@@ -82,8 +82,6 @@ $success: $green;
 
 
 // game
-
-
 #game {
     position: relative;
     padding-bottom: 56.25%;
@@ -99,9 +97,6 @@ $success: $green;
 
 #layer-background {
     z-index: 1;
-    background-image: url('/static/img/background.jpg');
-    background-size: contain;
-    background-repeat: no-repeat;
 }
 
 #layer-unit {
@@ -116,6 +111,7 @@ $success: $green;
 
 
 .unit {
+    z-index: 2;
     position: absolute;
     width: 2.825%;
     height: 5%;
@@ -124,41 +120,95 @@ $success: $green;
 
 
 
-// // fullscreen: full width background color
-// #game:fullscreen #layer-background {
-//     width: 100%;
-// }
+// fullscreen: full width (hack inside...)
+#game:fullscreen #layer-info {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:fullscreen #layer-unit {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:fullscreen #layer-background {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:fullscreen #layer-background img {
+    width: 100%;
+    height: auto;
+}
 
-// #game:-webkit-full-screen #layer-background {
-//     width: 100%;
-// }
+#game:-webkit-full-screen #layer-info {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-webkit-full-screen #layer-unit {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-webkit-full-screen #layer-background {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-webkit-full-screen #layer-background img {
+    width: 100%;
+    height: auto;
+}
 
-// #game:-moz-full-screen #layer-background {
-//     width: 100%;
-// }
+#game:-moz-full-screen #layer-info {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-moz-full-screen #layer-unit {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-moz-full-screen #layer-background {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-moz-full-screen #layer-background img {
+    width: 100%;
+    height: auto;
+}
 
-// #game:-ms-fullscreen #layer-background {
-//     width: 100%;
-// }
-
-
-// // fullscreen: full height background image
-// #game:fullscreen img {
-//     width: auto;
-//     height: 100vh;
-// }
-
-// #game:-webkit-full-screen img {
-//     width: auto;
-//     height: 100vh;
-// }
-
-// #game:-moz-full-screen img {
-//     width: auto;
-//     height: 100vh;
-// }
-
-// #game:-ms-fullscreen img {
-//     width: auto;
-//     height: 100vh;
-// }
+#game:-ms-fullscreen #layer-info {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-ms-fullscreen #layer-unit {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-ms-fullscreen #layer-background {
+    width: 100vw;
+    height: 56.5vw;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+#game:-ms-fullscreen #layer-background img {
+    width: 100%;
+    height: auto;
+}
