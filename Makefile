@@ -55,6 +55,19 @@ front-deploy:
 front-deploy-prod:
 	npm run deploy
 
+bump-version:
+	IFS=. read -r MAJOR MINOR PATCH <<< $(VERSION) && \
+	NEW_VERSION=$$MAJOR.$$((MINOR + 1)).$$PATCH && \
+	sed -Ei "s/^(VERSION = ).*/\1$$NEW_VERSION/" Makefile && \
+	sed -Ei "s/(version=)'.*'/\1'$$NEW_VERSION'/" setup.py && \
+	sed -Ei "s/(\"version\": )\".*\"/\1\"$$NEW_VERSION\"/" package.json && \
+	git add -A && \
+	git commit -m "Bump version (v$$NEW_VERSION)" && \
+	git tag v$$NEW_VERSION && \
+	echo git push --all --tags origin
+
+
+
 
 # LINT && TEST
 eslint:

@@ -60,6 +60,7 @@ server {
 
     location /static/ {
         root /srv/http/;
+        rewrite ^/static/(js|css)/rmrf\.\d+\.\d+\.\d+\.min\.(js|css)$ /static/$1/rmrf.min.$2 break;
 
         expires 1y;
         access_log off;

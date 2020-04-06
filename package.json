@@ -1,6 +1,6 @@
 {
   "name": "WebShell",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "author": "JeanMax",
   "description": "The best webapp in town",
   "license": "MIT",
@@ -94,6 +94,6 @@
     "js-uglify": "cp src/WebShell/static/js/rmrf.js src/WebShell/static/js/rmrf.min.js",
     "js-uglify-prod": "terser node_modules/socket.io-client/dist/socket.io.slim.js node_modules/mithril/mithril.min.js src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js",
     "html-deploy": "cp src/WebShell/templates/index.html src/WebShell/static/index.html",
-    "html-deploy-prod": "sed -E 's/.*DEBUG.*//' src/WebShell/templates/index.html | html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype --output src/WebShell/static/index.html"
+    "html-deploy-prod": "VERSION=$(grep -E 'version.*,$' package.json | sed -E 's/.*: \"(.*)\",/\\1/') && sed -E 's/.*DEBUG.*//' src/WebShell/templates/index.html | sed \"s/.min/.$VERSION.min/\" | html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype --output src/WebShell/static/index.html"
   }
 }

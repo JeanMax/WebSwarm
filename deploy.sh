@@ -91,6 +91,7 @@ sync_project() {
     sudo mkdir -p /home/$GUNICORN_USER/$PROJECT/rootfs
     sudo rsync -a --delete \
          --exclude .git \
+         --exclude .gitkeep \
          --exclude .gitignore \
          --exclude LICENSE \
          --exclude .builds \
