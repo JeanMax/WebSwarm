@@ -2,20 +2,47 @@
  * the game rendering idea is heavily inspired (stolen) from:
  * https://github.com/kiki727/geMithril
  */
+var g_is_running = false;
 
 
-var Unit = {
-    view: function(vnode) {
-        const v = vnode.attrs.vector;
-        return (
-            <div class="unit"
-                 style={"left:" + v.x + "%;" +
-                        "top:" + v.y + "%;" +
-                        "width:" + (v.w * 0.565) + "%;" +
-                        "height:" + v.h + "%"}>
-            </div>
-        );
+function Unit() {
+    let vector = null;
+
+    function kill(event) {
+        if (!g_is_running) {
+            return;
+        }
+        const e = event || window.event;
+        const target = e.target || e.srcElement;
+
+        target.style.backgroundImage = "";
+        target.style.backgroundSize = "";
+        target.classList.add("explosion");
+        setTimeout(() => {
+            vector.is_alive = false;
+            target.classList.remove("explosion");
+            target.classList.add("dead");
+        }, 500);
     }
+
+    return {
+        oninit: function(vnode) {
+            vector = vnode.attrs.vector;
+            vector.is_alive = true;
+        },
+
+        view: function(vnode) {
+            return (
+                <div class="unit"
+                     onclick={(e)=>kill(e)}
+                     style={"left:" + vector.x + "%;" +
+                            "top:" + vector.y + "%;" +
+                            "width:" + (vector.w * 0.565) + "%;" +
+                            "height:" + vector.h + "%"}>
+                </div>
+            );
+        }
+    };
 };
 
 
@@ -29,9 +56,7 @@ function create_vectors(n) {
 
 
 
-function Game(initial_vnode) {
-    let is_running = false;
-
+function Game() {
     let show_fps = false;
     let fps = 0;
     const times = [];
@@ -49,13 +74,13 @@ function Game(initial_vnode) {
 
     function start() {
         console.log("start!");
-        is_running = true;
+        g_is_running = true;
         m.redraw();
     }
 
     function stop() {
         console.log("stop!");
-        is_running = false;
+        g_is_running = false;
     }
 
     function count_fps(){
@@ -71,13 +96,15 @@ function Game(initial_vnode) {
 
     function play_frame() {
         vectors.forEach(v => {
-            move(v);
+            if (v.is_alive) {
+                move(v);
+            }
         });
     }
 
     return {
-        onupdate: function(vnode) {
-            if (is_running) {
+        onupdate: function() {
+            if (g_is_running) {
                 if (show_fps) {
                     count_fps();
                 }
@@ -91,8 +118,7 @@ function Game(initial_vnode) {
                 <div class="box has-text-centered">
 
                   <div id="game">
-                    <div class="layer" id="layer-background">
-                    </div>
+                    <div class="layer" id="layer-background"></div>
 
                     <div class="layer" id="layer-unit">
                       {units_to_html()}
@@ -110,7 +136,7 @@ function Game(initial_vnode) {
                     </div>
 
                     <div class="column">
-                      {is_running ?
+                      {g_is_running ?
                        <a class="button is-warning" onclick={stop}>Stop!</a>
                        : <a class="button is-success" onclick={start}>Start!</a>
                       }

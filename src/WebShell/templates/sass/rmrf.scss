@@ -105,33 +105,46 @@ $success: $green;
 }
 
 #layer-background {
-    z-index: 1;
     background-image: url('/static/img/background.jpg');
     background-size: contain;
     background-repeat: no-repeat;
 }
 
 #layer-unit {
-    z-index: 2;
     background: transparent!important;
 }
 
 #layer-info {
-    z-index: 3;
     background: transparent!important;
+    pointer-events: none;
 }
 
 
 .unit {
-    z-index: 2;
     position: absolute;
     // width: 2.825%;
     // height: 5%;
 
-    // background-color: red;
     background-image: url('/static/img/favicon.ico');
-    background-size: contain;
-    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+
+.explosion {
+    background-image: url('/static/img/explosion.png');
+    background-size: 800% auto;
+    // background-color: transparent;
+    // transform: scale(100/8/100);
+    animation: explosion_animation 0.5s steps(8);
+}
+
+@keyframes explosion_animation {
+   from { background-position:    0% 0; }
+     to { background-position: -800% 0; }
+}
+
+.dead {
+    visibility: hidden;
 }
 
 
