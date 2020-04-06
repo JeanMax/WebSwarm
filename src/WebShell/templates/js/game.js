@@ -31,7 +31,7 @@ function Unit() {
             vector.is_alive = true;
         },
 
-        view: function(vnode) {
+        view: function() {
             return (
                 <div class="unit"
                      onclick={(e)=>kill(e)}
@@ -43,7 +43,7 @@ function Unit() {
             );
         }
     };
-};
+}
 
 
 function create_vectors(n) {
