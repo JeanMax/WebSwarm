@@ -2,7 +2,7 @@
 # Customize this!
 NAME = WebShell
 AUTHOR = JeanMax
-VERSION = 0.1.1
+VERSION = 0.2.1
 
 
 # Some globads
@@ -61,10 +61,7 @@ bump-version:
 	sed -Ei "s/^(VERSION = ).*/\1$$NEW_VERSION/" Makefile && \
 	sed -Ei "s/(version=)'.*'/\1'$$NEW_VERSION'/" setup.py && \
 	sed -Ei "s/(\"version\": )\".*\"/\1\"$$NEW_VERSION\"/" package.json && \
-	git add -A && \
-	git commit -m "Bump version (v$$NEW_VERSION)" && \
-	git tag v$$NEW_VERSION && \
-	echo git push --all --tags origin
+	printf "\n\nRun these commands to commit/tag/push new version:\n\ngit add -A\ngit commit -m 'Bump version (v$$NEW_VERSION)'\ngit tag v$$NEW_VERSION\ngit push\ngit push --tags\n\n"
 
 
 
