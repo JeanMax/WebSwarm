@@ -1,6 +1,6 @@
 {
   "name": "WebShell",
-  "version": "0.0.1",
+  "version": "0.2.1",
   "author": "JeanMax",
   "description": "The best webapp in town",
   "license": "MIT",
@@ -81,17 +81,19 @@
   "scripts": {
     "lint": "eslint --rule 'no-undef:0' --rule 'no-unused-vars:0' --rule 'mithril/jsx-no-undef:0' src/WebShell/templates/js && eslint --rule 'quotes:0' src/WebShell/static/js/rmrf.js",
     "start": "npm run css-deploy && npm run js-deploy && npm run html-deploy",
-    "deploy": "npm run css-deploy-prod && npm run js-deploy-prod && npm run html-deploy",
+    "deploy": "npm run css-deploy-prod && npm run js-deploy-prod && npm run html-deploy-prod",
     "css-deploy": "npm run css-build && npm run css-postcss",
     "css-deploy-prod": "npm run css-build && npm run css-postcss-prod",
     "css-build": "node-sass --omit-source-map-url src/WebShell/templates/sass/rmrf.scss src/WebShell/static/css/rmrf.css",
     "css-postcss": "postcss --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
     "css-postcss-prod": "postcss --no-map --use cssnano --use autoprefixer --output src/WebShell/static/css/rmrf.min.css src/WebShell/static/css/rmrf.css",
-    "js-deploy": "npm run js-build && npm run js-uglify",
+    "js-deploy": "npm run js-build && npm run js-uglify && npm run js-copy-lib",
     "js-deploy-prod": "npm run js-build && npm run js-uglify-prod",
+    "js-copy-lib": "cp node_modules/mithril/mithril.js node_modules/socket.io-client/dist/socket.io.dev.js node_modules/socket.io-client/dist/socket.io.dev.js.map src/WebShell/static/js/",
     "js-build": "babel src/WebShell/templates/js/*.js --out-file src/WebShell/static/js/rmrf.js",
-    "js-uglify": "cat node_modules/socket.io-client/dist/socket.io.dev.js node_modules/mithril/mithril.js src/WebShell/static/js/rmrf.js > src/WebShell/static/js/rmrf.min.js",
+    "js-uglify": "cp src/WebShell/static/js/rmrf.js src/WebShell/static/js/rmrf.min.js",
     "js-uglify-prod": "terser node_modules/socket.io-client/dist/socket.io.slim.js node_modules/mithril/mithril.min.js src/WebShell/static/js/rmrf.js --compress --mangle --output src/WebShell/static/js/rmrf.min.js",
-    "html-deploy": "html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype src/WebShell/templates/index.html --output src/WebShell/static/index.html"
+    "html-deploy": "cp src/WebShell/templates/index.html src/WebShell/static/index.html",
+    "html-deploy-prod": "VERSION=$(grep -E 'version.*,$' package.json | sed -E 's/.*: \"(.*)\",/\\1/') && sed -E 's/.*DEBUG.*//' src/WebShell/templates/index.html | sed \"s/.min/.$VERSION.min/\" | html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype --output src/WebShell/static/index.html"
   }
 }

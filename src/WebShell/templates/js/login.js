@@ -1,6 +1,7 @@
 function open_modal() {
     document.documentElement.classList.add("is-clipped");
     document.getElementById("login-modal").classList.add("is-active");
+    document.getElementById("login-input").focus();
 }
 
 
@@ -13,7 +14,7 @@ function LoginModal() {
     }
 
     function validate_username() {
-        var username_value = document.getElementById("login-input").value;
+        const username_value = document.getElementById("login-input").value;
         if (!username_value) {
             document.getElementById("login-input").classList.remove("is-success");
             document.getElementById("login-input").classList.remove("is-danger");
@@ -30,7 +31,7 @@ function LoginModal() {
     }
 
     function login() {
-        var username_value = document.getElementById("login-input").value;
+        const username_value = document.getElementById("login-input").value;
         if (!is_valid_username(username_value)) {
             return;
         }
@@ -46,17 +47,18 @@ function LoginModal() {
     }
 
     return {
-        oninit: function() {
+        oncreate: function(vnode) {
             document.addEventListener("keydown", function (event) {
-                var e = event || window.event;
+                if (!vnode.dom.classList.value.includes("is-active")) {
+                    return;
+                }
+                const e = event || window.event;
                 if (e.keyCode === 27) {
                     close_modal();
-                } else if (e.keyCode == 13
-                           && document.getElementById("login-modal")
-                    .classList.value.includes("is-active")) {
-                        login();
-                        m.redraw();
-                    }
+                } else if (e.keyCode === 13) {
+                    login();
+                    m.redraw();
+                }
             });
         },
 
