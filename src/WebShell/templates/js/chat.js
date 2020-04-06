@@ -25,19 +25,20 @@ function Chat() {
     }
 
     function send_chat_msg() {
-        var chat_msg_input = document.getElementById("message-input");
-        if (!chat_msg_input.value) {
+        const chat_msg_input = document.getElementById("message-input");
+        const msg = chat_msg_input.value;
+        if (!msg) {
             return;
         }
         if (!g_username) {
             open_modal();
             return;
         }
+        chat_msg_input.value = "";
         socket.emit(
             "chat_msg",
-            {user: g_username, content: chat_msg_input.value}
+            {user: g_username, content: msg}
         );
-        chat_msg_input.value = "";
     }
 
     return {
@@ -45,11 +46,11 @@ function Chat() {
             socket.on("chat_message_log", function(msg) {
                 console.log("chat msg received:" + JSON.stringify(msg)); // DEBUG
                 g_chat_logs.push(msg);
-                setTimeout(m.redraw, 50);
+                setTimeout(m.redraw, 1); //TODO: iiiiirk UGLY
             });
 
             document.addEventListener("keydown", function (event) {
-                var e = event || window.event;
+                const e = event || window.event;
                 if (e.keyCode == 13
                     && document.activeElement === document.getElementById("message-input")) {
                     send_chat_msg();
@@ -58,8 +59,12 @@ function Chat() {
 
         },
 
+        oncreate: function() {
+            document.getElementById("message-input").focus();
+        },
+
         onupdate: function() {
-            var msg_box = document.getElementById("message-logs");
+            const msg_box = document.getElementById("message-logs");
             msg_box.scrollTop = msg_box.scrollHeight;
         },
 
