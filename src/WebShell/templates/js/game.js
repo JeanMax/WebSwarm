@@ -37,7 +37,7 @@ function Unit() {
                      onclick={(e)=>kill(e)}
                      style={"left:" + vector.x + "%;" +
                             "top:" + vector.y + "%;" +
-                            "width:" + (vector.w * 0.565) + "%;" +
+                            "width:" + vector.w + "%;" +
                             "height:" + vector.h + "%"}>
                 </div>
             );

@@ -23,7 +23,7 @@ function RandomVector() {
     const dim = rdm(3, 7);
     return Vector(
         rdm(0, 95), rdm(0, 95),
-        dim, dim,
+        dim * 0.565, dim,
         rdm(-0.5, 0.5), rdm(-0.5, 0.5)
     );
 }
@@ -37,7 +37,7 @@ function RandomVector() {
 // }
 
 function is_outside(r) {
-    return r.x < 0 || r.x + (r.w * 0.565) > 100
+    return r.x < 0 || r.x + r.w > 100
         || r.y < 0 || r.y + r.h > 100;
 }
 
@@ -49,8 +49,8 @@ function move(v) {
     }
 
     if (v.x < 0) {
-        v.x = 100 - (v.w * 0.565);
-    } else if (v.x + (v.w * 0.565) > 100) {
+        v.x = 100 - v.w;
+    } else if (v.x + v.w > 100) {
         v.x = 0;
     }
 
