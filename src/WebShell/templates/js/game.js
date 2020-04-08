@@ -60,10 +60,9 @@ function Game() {
     let show_fps = false;
     let fps = 0;
     const times = [];
-    // let prev_timestamp = 0;
-    // let now = 0;
+    const framerate = 30;
 
-    const max_unit = 80;
+    const max_unit = 100;
     const vectors = create_vectors(max_unit);
 
     function units_to_html() {
@@ -74,12 +73,12 @@ function Game() {
 
     function start() {
         console.log("start!");
-        g_is_running = true;
-        m.redraw();
+        g_is_running = setInterval(m.redraw, 1000 / framerate);
     }
 
     function stop() {
         console.log("stop!");
+        clearInterval(g_is_running);
         g_is_running = false;
     }
 
@@ -90,8 +89,6 @@ function Game() {
         }
         times.push(now);
         fps = times.length;
-        // const this_fps = parseInt((1000 / (now - prev_timestamp)));
-        // prev_timestamp = now;
     }
 
     function play_frame() {
@@ -109,7 +106,6 @@ function Game() {
                     count_fps();
                 }
                 play_frame();
-                m.redraw();  //loop!
             }
         },
 

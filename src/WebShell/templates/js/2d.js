@@ -20,7 +20,7 @@ function rdm(min, max) {
 }
 
 function RandomVector() {
-    const dim = rdm(2, 5);
+    const dim = rdm(3, 7);
     return Vector(
         rdm(0, 95), rdm(0, 95),
         dim, dim,
