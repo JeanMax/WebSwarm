@@ -1,9 +1,11 @@
 import os
+from threading import Lock
 
 from flask import Flask, current_app
 from flask_socketio import SocketIO, emit
 
 import WebShell.log as log
+from WebShell.framerate import FrameRateHandler
 
 
 app = Flask(__name__)
@@ -11,10 +13,12 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'not so secret...')
 socketio = SocketIO(
     app,
     logger=int(os.environ.get('VERBOSE', 2)) > 1,
-    engineio_logger=int(os.environ.get('VERBOSE', 2)) > 1
-    # async_mode='eventlet',
-    # cors_allowed_origins='*'
+    engineio_logger=int(os.environ.get('VERBOSE', 2)) > 1,
+    async_mode='eventlet',
 )
+
+thread = None
+thread_lock = Lock()
 
 
 # INDEX: static html
@@ -30,18 +34,10 @@ def index():
 
 # SOCKETS
 
-@socketio.on('custom_event')
-def handle_my_custom_event(json):
-    log.info(f'Custom event: received json: {json}')
-    emit('test', {"pouet": 42}, broadcast=True, include_self=True)
-    return True  # confirmation
-
-
 @socketio.on('chat_msg')
 def on_chat_msg(json):
     log.info(f'Chat msg: {json}')
-    emit('chat_message_log', json, broadcast=True, include_self=True)
-    return True  # confirmation
+    emit('chat_message_log', json, broadcast=True)
 
 
 @socketio.on('login')
@@ -57,6 +53,10 @@ def on_logout(json):
 @socketio.on('connect')
 def on_connect():
     log.info('Client connected')
+    global thread
+    with thread_lock:
+        if thread is None:
+            thread = socketio.start_background_task(game_loop)
 
 
 @socketio.on('disconnect')
@@ -67,3 +67,19 @@ def on_disconnect():
 @socketio.on_error()
 def on_error(e):
     log.warning(f"Socket error: {e}")
+
+
+# BACKGROUND THREAD
+
+def game_loop():
+    timer = FrameRateHandler(socketio.sleep, fps=1)
+    count = 0
+    while True:
+
+        count += 1
+        socketio.emit(
+            'update',
+            {'data': 'Server generated event', 'count': count},
+        )
+
+        timer.wait_next_frame()
