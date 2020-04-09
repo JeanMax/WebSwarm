@@ -37,7 +37,7 @@ function Unit() {
                      onclick={(e)=>kill(e)}
                      style={"left:" + vector.x + "%;" +
                             "top:" + vector.y + "%;" +
-                            "width:" + (vector.w * 0.565) + "%;" +
+                            "width:" + vector.w + "%;" +
                             "height:" + vector.h + "%"}>
                 </div>
             );
@@ -55,30 +55,29 @@ function create_vectors(n) {
 }
 
 
-
 function Game() {
     let show_fps = false;
     let fps = 0;
     const times = [];
-    const framerate = 30;
+    // const framerate = 30;
 
     const max_unit = 100;
     const vectors = create_vectors(max_unit);
 
     function units_to_html() {
-        return vectors.map((v, k) => {
-            return <Unit vector={v} key={k}/>;
+        return vectors.map(v=> {
+            return <Unit vector={v} key={v.key}/>;
         });
     }
 
     function start() {
         console.log("start!");
-        g_is_running = setInterval(m.redraw, 1000 / framerate);
+        g_is_running = true;  //setInterval(m.redraw, 1000 / framerate);
     }
 
     function stop() {
         console.log("stop!");
-        clearInterval(g_is_running);
+        // clearInterval(g_is_running);
         g_is_running = false;
     }
 
@@ -91,22 +90,42 @@ function Game() {
         fps = times.length;
     }
 
-    function play_frame() {
-        vectors.forEach(v => {
-            if (v.is_alive) {
-                move(v);
-            }
-        });
+    // function play_frame() {
+    //     vectors.forEach(v => {
+    //         if (v.is_alive) {
+    //             move(v);
+    //         }
+    //     });
+    // }
+
+    function server_update(data) {
+        if (!g_is_running) {
+            return;
+        }
+        const update_vectors = JSON.parse(data);
+        for (let i = 0; i < update_vectors.length; i++) {
+            Object.assign(vectors[i], update_vectors[i]);
+        }
+        m.redraw();
     }
 
     return {
+        oninit: function() {
+            socket.on("update", server_update);
+            socket.on("test", data => { // DEBUG
+                console.log("test...");
+                console.log(data);
+            });
+        },
+
         onupdate: function() {
-            if (g_is_running) {
-                if (show_fps) {
-                    count_fps();
-                }
-                play_frame();
+            if (!g_is_running) {
+                return;
             }
+            if (show_fps) {
+                count_fps();
+            }
+            // play_frame();
         },
 
         view: function() {

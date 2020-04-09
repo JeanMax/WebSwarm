@@ -6,6 +6,7 @@ from flask_socketio import SocketIO, emit
 
 import WebShell.log as log
 from WebShell.framerate import FrameRateHandler
+from WebShell.twodim import World
 
 
 app = Flask(__name__)
@@ -72,14 +73,12 @@ def on_error(e):
 # BACKGROUND THREAD
 
 def game_loop():
-    timer = FrameRateHandler(socketio.sleep, fps=1)
-    count = 0
+    world = World()
+    timer = FrameRateHandler(socketio.sleep, fps=30)
     while True:
-
-        count += 1
         socketio.emit(
-            'update',
-            {'data': 'Server generated event', 'count': count},
+            "update",
+            world.to_json()
         )
-
+        world.next_frame()
         timer.wait_next_frame()
