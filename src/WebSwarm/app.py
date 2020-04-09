@@ -7,6 +7,7 @@ from flask_socketio import SocketIO, emit
 import WebSwarm.log as log
 from WebSwarm.framerate import FrameRateHandler
 from WebSwarm.twodim import World
+from WebSwarm.chat import Chat
 
 
 app = Flask(__name__)
@@ -20,6 +21,8 @@ socketio = SocketIO(
 
 thread = None
 thread_lock = Lock()
+
+chat = Chat()
 
 
 # INDEX: static html
@@ -38,7 +41,14 @@ def index():
 @socketio.on('chat_msg')
 def on_chat_msg(json):
     log.info(f'Chat msg: {json}')
-    emit('chat_message_log', json, broadcast=True)
+    emit('srv_chat_msg', json, broadcast=True)
+    chat.add_msg(json)
+
+
+@socketio.on('chat_logs')
+def on_chat_logs(json):
+    log.info(f'Chat logs: {json}')
+    emit('srv_chat_logs', chat.logs)
 
 
 @socketio.on('login')

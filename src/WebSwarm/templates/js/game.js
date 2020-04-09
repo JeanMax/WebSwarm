@@ -108,45 +108,42 @@ function BoidList() {
 }
 
 
-function Game() {
+var Game = {
+    view: function() {
+        return (
+            <div class="box has-text-centered">
 
-    return {
-        view: function() {
-            return (
-                <div class="box has-text-centered">
+              <div id="game">
+                <div class="layer" id="layer-background"></div>
 
-                  <div id="game">
-                    <div class="layer" id="layer-background"></div>
-
-                    <div class="layer" id="layer-unit">
-                      <BoidList/>
-                    </div>
-
-                    <div class="layer" id="layer-info">
-                      <Fps/>
-                    </div>
-                  </div>
-
-                  <br />
-                  <div class="columns">
-                    <div class="column">
-                      <a class="button is-info" onclick={() => g_show_fps = !g_show_fps}>{g_show_fps ? "Hide" : "Show"} fps</a>
-                    </div>
-
-                    <div class="column">
-                      {g_is_running ?
-                       <a class="button is-warning" onclick={() => g_is_running = false}>Stop!</a>
-                       : <a class="button is-success" onclick={() => g_is_running = true}>Start!</a>
-                      }
-                    </div>
-
-                    <div class="column">
-                      <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
-                    </div>
-                  </div>
-
+                <div class="layer" id="layer-unit">
+                  <BoidList/>
                 </div>
-            );
-        }
-    };
-}
+
+                <div class="layer" id="layer-info">
+                  <Fps/>
+                </div>
+              </div>
+
+              <br />
+              <div class="columns">
+                <div class="column">
+                  <a class="button is-info" onclick={() => g_show_fps = !g_show_fps}>{g_show_fps ? "Hide" : "Show"} fps</a>
+                </div>
+
+                <div class="column">
+                  {g_is_running ?
+                   <a class="button is-warning" onclick={() => g_is_running = false}>Stop!</a>
+                   : <a class="button is-success" onclick={() => g_is_running = true}>Start!</a>
+                  }
+                </div>
+
+                <div class="column">
+                  <a class="button is-info" onclick={()=> request_fullscreen(document.getElementById("game"))}>FullScreen</a>
+                </div>
+              </div>
+
+            </div>
+        );
+    }
+};
