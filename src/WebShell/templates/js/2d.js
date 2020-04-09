@@ -36,27 +36,27 @@ function RandomVector() {
 //     return Math.sqrt(x_diff * x_diff + y_diff * y_diff);
 // }
 
-function is_outside(r) {
-    return r.x < 0 || r.x + r.w > 100
-        || r.y < 0 || r.y + r.h > 100;
-}
+// function is_outside(r) {
+//     return r.x < 0 || r.x + r.w > 100
+//         || r.y < 0 || r.y + r.h > 100;
+// }
 
-function move(v) {
-    if (!is_outside(v)) {
-        v.x += v.dir.x;
-        v.y += v.dir.y;
-        return;
-    }
+// function move(v) {
+//     if (!is_outside(v)) {
+//         v.x += v.dir.x;
+//         v.y += v.dir.y;
+//         return;
+//     }
 
-    if (v.x < 0) {
-        v.x = 100 - v.w;
-    } else if (v.x + v.w > 100) {
-        v.x = 0;
-    }
+//     if (v.x < 0) {
+//         v.x = 100 - v.w;
+//     } else if (v.x + v.w > 100) {
+//         v.x = 0;
+//     }
 
-    if (v.y < 0) {
-        v.y = 100 - v.h;
-    } else if (v.y + v.h > 100) {
-        v.y = 0;
-    }
-}
+//     if (v.y < 0) {
+//         v.y = 100 - v.h;
+//     } else if (v.y + v.h > 100) {
+//         v.y = 0;
+//     }
+// }

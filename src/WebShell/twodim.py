@@ -11,7 +11,7 @@ class Point():
         self.x, self.y = x, y
 
     def __repr__(self):
-        return f"<Point ({self.x:.2g}, {self.y:.2g})>"
+        return f"<Point ({self.x:.4g}, {self.y:.4g})>"
 
     def distance(self, point):
         return math.hypot(point.x - self.x, point.y - self.y)
@@ -29,7 +29,7 @@ class Rectangle(Point):
         self.w, self.h = w, h
 
     def __repr__(self):
-        return f"<Rectangle ({self.x:.2g}, {self.y:.2g}), ({self.w}, {self.h})>"
+        return f"<Rectangle ({self.x:.4g}, {self.y:.4g}), ({self.w}, {self.h})>"
 
     def is_outside(self):
         return (
@@ -45,18 +45,8 @@ class Vector(Rectangle):
 
     def __repr__(self):
         return (
-            f"<Vector ({self.x:.2g}, {self.y:.2g}), ({self.w}, {self.h}), "
-            f"({self.direction.x:.2g}, {self.direction.y:.2g})>"
-        )
-
-    def to_json(self):
-        return (
-            '{'
-            f'"x":{self.x:.2g},"y":{self.y:.2g},'
-            f'"w":{self.w},"h":{self.h},'
-            '"dir":{'
-            f'"x":{self.direction.x:.2g},"y":{self.direction.y:.2g}'
-            '}}'
+            f"<Vector ({self.x:.4g}, {self.y:.4g}), ({self.w}, {self.h}), "
+            f"({self.direction.x:.4g}, {self.direction.y:.4g})>"
         )
 
     def move(self):
@@ -78,22 +68,34 @@ class Vector(Rectangle):
 
 
 class Boid(Vector):
-    size = 3
+    size = 5
     sight_radius = 7
     max_speed = 0.5
 
-    def __init__(self, x=None, y=None):
+    def __init__(self, x=None, y=None, key=None):
         super().__init__(
             x=x if x is not None else rdm(0, WORLD_WIDTH - Boid.size),
             y=y if y is not None else rdm(0, WORLD_HEIGHT - Boid.size),
-            w=Boid.size,
+            w=Boid.size * 0.565,  # 16/9, it's actually a square...
             h=Boid.size,
             dir_x=rdm(-Boid.max_speed, Boid.max_speed),
             dir_y=rdm(-Boid.max_speed, Boid.max_speed)
         )
+        self.key = key
 
     def __repr__(self):
-        return f"<Boid ({self.x:.2g}, {self.y:.2g})>"
+        return f"<Boid ({self.x:.4g}, {self.y:.4g})>"
+
+    def to_json(self):
+        return (
+            '{'
+            f'"key":{self.key},'
+            f'"x":{self.x:.4g},"y":{self.y:.4g},'
+            f'"w":{self.w},"h":{self.h},'
+            '"dir":{'
+            f'"x":{self.direction.x:.2g},"y":{self.direction.y:.2g}'
+            '}}'
+        )
 
     def _in_range_maybe(self, grid):
         ret = []
@@ -116,11 +118,12 @@ class World():
     tile_size = Boid.sight_radius * 2
 
     def __init__(self, max_boids=100):
-        self.boids = [Boid() for _ in range(max_boids)]
+        self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid = self._new_grid()
         self._fill_grid()
 
-    def _new_grid(self):
+    @staticmethod
+    def _new_grid():
         d = math.ceil(max(WORLD_WIDTH, WORLD_HEIGHT) / World.tile_size)
         return [
             [[] for _ in range(d)]
@@ -140,3 +143,6 @@ class World():
             b.move()
         self.grid = self._new_grid()
         self._fill_grid()
+
+    def to_json(self):
+        return "[" + ",".join([b.to_json() for b in self.boids]) + "]"
