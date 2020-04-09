@@ -171,11 +171,13 @@ class Boid(Vector):
         elif self.next_direction.y < -Boid.max_speed:
             self.next_direction.y = -Boid.max_speed
 
-    def _alignement_force(self, neighbors):
+    @staticmethod
+    def _alignement_force(neighbors):
         mean_direction = Point.mean([n.direction for n in neighbors])
         return mean_direction * Boid.alignment_coef
 
-    def _cohesion_force(self, neighbors):
+    @staticmethod
+    def _cohesion_force(neighbors):
         mean_coord = Point.mean(neighbors)
         return mean_coord * Boid.cohesion_coef
 
