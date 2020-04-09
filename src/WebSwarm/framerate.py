@@ -1,5 +1,5 @@
 import time
-from WebShell.log import warning
+from WebSwarm.log import warning
 
 
 class FrameRateHandler():

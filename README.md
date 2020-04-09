@@ -1,8 +1,8 @@
-# WebShell
+# WebSwarm
 
 A website acting as a remote shell.
 
-[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebShell.svg)](https://builds.sr.ht/~jean-max/WebShell) - archlinux build
+[![builds.sr.ht status](https://builds.sr.ht/~jean-max/WebS.svg)](https://builds.sr.ht/~jean-max/WebS) - archlinux build
 
 
 ## Usage:

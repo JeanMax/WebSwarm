@@ -15,7 +15,7 @@ ExecStart=/home/superuser3000/rmrf/run_with_env.sh \
     --workers 1 \
     --bind unix:/tmp/gunicorn.sock \
     --name rmrf \
-    WebShell:app
+    WebSwarm:app
 
 [Install]
 WantedBy=multi-user.target

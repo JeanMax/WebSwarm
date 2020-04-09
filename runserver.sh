@@ -46,5 +46,5 @@ export FLASK_ENV=development
 # test "$VERBOSE" || export VERBOSE=3
 
 watch_build &
-# FLASK_APP=src/WebShell/app.py flask run
-webshell
+# FLASK_APP=src/WebSwarm/app.py flask run
+webswarm

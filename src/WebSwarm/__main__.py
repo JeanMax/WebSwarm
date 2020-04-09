@@ -1,5 +1,5 @@
 """
-Entrypoint module, in case you use `python -m WebShell`.
+Entrypoint module, in case you use `python -m WebSwarm`.
 Why does this file exist, and why __main__? For more info, read:
 - https://www.python.org/dev/peps/pep-0338/
 - https://docs.python.org/2/using/cmdline.html#cmdoption-m
@@ -7,7 +7,7 @@ Why does this file exist, and why __main__? For more info, read:
   Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
 
-from WebShell import main
+from WebSwarm import main
 
 
 if __name__ == '__main__':

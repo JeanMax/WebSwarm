@@ -1,6 +1,6 @@
 
 # Customize this!
-NAME = WebShell
+NAME = WebSwarm
 AUTHOR = JeanMax
 VERSION = 0.2.1
 

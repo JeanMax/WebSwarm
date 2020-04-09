@@ -1,4 +1,4 @@
-from WebShell.twodim import World, Boid
+from WebSwarm.twodim import World, Boid
 
 
 def sort(boid_list):

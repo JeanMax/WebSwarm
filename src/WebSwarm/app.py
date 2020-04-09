@@ -4,9 +4,9 @@ from threading import Lock
 from flask import Flask, current_app
 from flask_socketio import SocketIO, emit
 
-import WebShell.log as log
-from WebShell.framerate import FrameRateHandler
-from WebShell.twodim import World
+import WebSwarm.log as log
+from WebSwarm.framerate import FrameRateHandler
+from WebSwarm.twodim import World
 
 
 app = Flask(__name__)
