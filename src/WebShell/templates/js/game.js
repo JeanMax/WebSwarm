@@ -98,17 +98,23 @@ function Game() {
     //     });
     // }
 
+    function server_update(data) {
+        if (!g_is_running) {
+            return;
+        }
+        const update_vectors = JSON.parse(data);
+        for (let i = 0; i < update_vectors.length; i++) {
+            Object.assign(vectors[i], update_vectors[i]);
+        }
+        m.redraw();
+    }
+
     return {
         oninit: function() {
-            socket.on("update", function(data) {
-                if (!g_is_running) {
-                    return;
-                }
-                const update_vectors = JSON.parse(data);
-                for (let i = 0; i < update_vectors.length; i++) {
-                    Object.assign(vectors[i], update_vectors[i]);
-                }
-                m.redraw();
+            socket.on("update", server_update);
+            socket.on("test", data => { // DEBUG
+                console.log("test...");
+                console.log(data);
             });
         },
 
