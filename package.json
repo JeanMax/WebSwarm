@@ -92,7 +92,7 @@
     "js-copy-lib": "cp node_modules/mithril/mithril.js node_modules/socket.io-client/dist/socket.io.dev.js node_modules/socket.io-client/dist/socket.io.dev.js.map src/WebSwarm/static/js/",
     "js-build": "babel src/WebSwarm/templates/js/*.js --out-file src/WebSwarm/static/js/rmrf.js",
     "js-uglify": "cp src/WebSwarm/static/js/rmrf.js src/WebSwarm/static/js/rmrf.min.js",
-    "js-uglify-prod": "terser node_modules/socket.io-client/dist/socket.io.slim.js node_modules/mithril/mithril.min.js src/WebSwarm/static/js/rmrf.js --compress --mangle --output src/WebSwarm/static/js/rmrf.min.js",
+    "js-uglify-prod": "terser node_modules/socket.io-client/dist/socket.io.slim.js node_modules/mithril/mithril.min.js src/WebSwarm/static/js/rmrf.js --compress --mangle --toplevel --output src/WebSwarm/static/js/rmrf.min.js",
     "html-deploy": "cp src/WebSwarm/templates/index.html src/WebSwarm/static/index.html",
     "html-deploy-prod": "VERSION=$(grep -E 'version.*,$' package.json | sed -E 's/.*: \"(.*)\",/\\1/') && sed -E 's/.*DEBUG.*//' src/WebSwarm/templates/index.html | sed \"s/.min/.$VERSION.min/\" | html-minifier-terser --collapse-boolean-attributes --collapse-inline-tag-whitespace --collapse-whitespace --remove-attribute-quotes --remove-comments --remove-empty-attributes --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --remove-style-link-type-attributes --remove-tag-whitespace  --use-short-doctype --output src/WebSwarm/static/index.html"
   }

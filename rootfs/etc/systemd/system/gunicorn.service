@@ -7,7 +7,7 @@ After=network.target
 User=superuser3000
 Group=http
 WorkingDirectory=/home/superuser3000/rmrf
-Environment="VERBOSE=3"
+Environment="VERBOSE=1"
 ExecStart=/home/superuser3000/rmrf/run_with_env.sh \
     gunicorn \
     --access-logfile - \
