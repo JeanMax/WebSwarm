@@ -150,7 +150,6 @@ setup(
         'flask',
         'flask-socketio',
         'eventlet',
-        'gunicorn',
     ],
 
     # List additional groups of dependencies here (e.g. development
@@ -168,6 +167,9 @@ setup(
             'pylint',
             'flake8',
             'flake8-bugbear',
+        ],
+        'prod': [
+            'gunicorn',
         ],
     },
 

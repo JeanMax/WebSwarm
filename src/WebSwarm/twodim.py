@@ -64,15 +64,28 @@ class Rectangle(Point):
 
 
 class Vector(Rectangle):
-    def __init__(self, x=0, y=0, w=0, h=0, dir_x=0, dir_y=0):
+    def __init__(self, x=0, y=0, w=0, h=0, dir_x=0, dir_y=0, key=None):
         super().__init__(x=x, y=y, w=w, h=h)
         self.direction = Point(x=dir_x, y=dir_y)
         self.next_direction = Point(x=dir_x, y=dir_y)
+        self.key = key
 
     def __repr__(self):
         return (
             f"<Vector ({self.x:.4g}, {self.y:.4g}), ({self.w}, {self.h}), "
             f"({self.direction.x:.4g}, {self.direction.y:.4g})>"
+        )
+
+    def to_json(self):
+        return (
+            '{'
+            f'"key":"{self.key}",'
+            f'"x":{self.x:.4g},"y":{self.y:.4g}'
+            # f'"w":{self.w},"h":{self.h},'
+            # '"dir":{'
+            # f'"x":{self.direction.x:.2g},"y":{self.direction.y:.2g}'
+            # '}'
+            '}'
         )
 
     def _teleport(self):
@@ -126,23 +139,12 @@ class Boid(Vector):
             w=Boid.size * 0.565,  # 16/9, it's actually a square...
             h=Boid.size,
             dir_x=rdm(-Boid.max_speed, Boid.max_speed),
-            dir_y=rdm(-Boid.max_speed, Boid.max_speed)
+            dir_y=rdm(-Boid.max_speed, Boid.max_speed),
+            key=key
         )
-        self.key = key
 
     def __repr__(self):
         return f"<Boid ({self.x:.4g}, {self.y:.4g})>"
-
-    def to_json(self):
-        return (
-            '{'
-            f'"key":{self.key},'
-            f'"x":{self.x:.4g},"y":{self.y:.4g},'
-            f'"w":{self.w},"h":{self.h},'
-            '"dir":{'
-            f'"x":{self.direction.x:.2g},"y":{self.direction.y:.2g}'
-            '}}'
-        )
 
     def _in_range_maybe(self, grid):
         ret = []
@@ -199,16 +201,47 @@ class Boid(Vector):
         self._limit_speed()
 
 
+class Player(Vector):
+    size = 5
+    sight_radius = size + 0.5
+    max_speed = 0.5
+
+    def __init__(self, x=None, y=None, key=None, name=None):
+        super().__init__(
+            x=x if x is not None else rdm(0, WORLD_WIDTH - Player.size),
+            y=y if y is not None else rdm(0, WORLD_HEIGHT - Player.size),
+            w=Player.size * 0.565,  # 16/9, it's actually a square...
+            h=Player.size,
+            dir_x=0,
+            dir_y=0,
+            key=key
+        )
+        self.name = name
+
+    def __repr__(self):
+        return f"<Player ({self.x:.4g}, {self.y:.4g})>"
+
+
 class World():
-    tile_size = Boid.sight_radius * 2
+    tile_size = max(Player.sight_radius, Boid.sight_radius) * 2
 
     def __init__(self, max_boids=100):
+        self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid = self._new_grid()
         self._fill_grid()
 
     def to_json(self):
-        return "[" + ",".join([b.to_json() for b in self.boids]) + "]"
+        return (
+            "{"
+            '"boids":['
+            + ",".join([b.to_json() for b in self.boids])
+            + "],"
+            '"players":['
+            + ",".join([p.to_json() for p in self.players_dic.values()])
+            + "]"
+            "}"
+        )
 
     @staticmethod
     def _new_grid():
@@ -225,6 +258,18 @@ class World():
             ][
                 int(b.x // World.tile_size)
             ].append(b)
+
+    def add_player(self, sid, username):
+        p = self.players_dic.get(sid, None)
+        if p is not None:
+            p.name = username
+        else:
+            self.players_dic[sid] = Player(key=sid, name=username)
+
+    def rm_player(self, sid, username):
+        p = self.players_dic.get(sid, None)
+        if p is not None:
+            del self.players_dic[sid]
 
     def next_frame(self):
         for b in self.boids:
