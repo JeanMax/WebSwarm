@@ -6,12 +6,12 @@ from WebSwarm.twodim import WORLD_WIDTH, WORLD_HEIGHT, Point, Vector
 class Boid(Vector):
     size = 3
     sight_radius = size + 0.5
-    max_speed = 0.5
+    max_speed = 0.8
 
-    alignment_coef = 1.5
-    cohesion_coef = 0.3
-    separation_coef = 5
-    player_coef = 600
+    alignment_coef = 30
+    cohesion_coef = 0.5
+    separation_coef = 1.5
+    player_coef = 1000
 
     def __init__(self, x=None, y=None, key=None):
         super().__init__(

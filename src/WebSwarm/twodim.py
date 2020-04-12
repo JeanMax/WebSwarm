@@ -104,11 +104,11 @@ class Vector(Rectangle):
             return
         if abs_dir_x:
             self.next_direction.x = (
-                abs_dir_x / self.next_direction.x
-            ) * self.max_speed
+                self.next_direction.x / max(abs_dir_x, abs_dir_y)
+            ) * self.max_speed * 0.565
         if abs_dir_y:
             self.next_direction.y = (
-                abs_dir_y / self.next_direction.y
+                self.next_direction.y / max(abs_dir_x, abs_dir_y)
             ) * self.max_speed
 
     def move(self):
