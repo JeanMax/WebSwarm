@@ -95,15 +95,15 @@ function UnitList() {
             return;
         }
         const update = JSON.parse(data);
-        update.boids.forEach((updated_boid, i) => {
+        update.boids.forEach(updated_boid => {
             if (boids[updated_boid.key] === undefined) {
                 boids[updated_boid.key] = Vector(
                     0, 0, boid_width, boid_height
                 );
             }
-            Object.assign(boids[i], updated_boid);
+            Object.assign(boids[updated_boid.key], updated_boid);
         });
-        update.players.forEach((updated_player, i) => {
+        update.players.forEach(updated_player => {
             if (players[updated_player.key] === undefined) {
                 players[updated_player.key] = Vector(
                     0, 0, player_width, player_height

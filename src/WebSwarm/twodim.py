@@ -275,7 +275,7 @@ class World():
         else:
             self.players_dic[key] = Player(key=key, name=username)
 
-    def rm_player(self, key, username):
+    def rm_player(self, key):
         p = self.players_dic.get(key, None)
         if p is not None:
             del self.players_dic[key]

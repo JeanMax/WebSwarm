@@ -129,9 +129,9 @@ def add_player(username):
 
 def rm_player():
     sid = request.sid
-    username = request.cookies.get('user', None)
+    # username = request.cookies.get('user', None)
     with update_lock:
-        world.rm_player(sid, username)
+        world.rm_player(sid)
 
 
 def turn_player(direction):
