@@ -120,13 +120,24 @@ $success: $green;
 }
 
 
-.unit {
+.boid {
     position: absolute;
-    // width: 2.825%;
-    // height: 5%;
-
     background-image: url('/static/img/favicon.ico');
     background-size: 100%;
+}
+
+.player {
+    position: absolute;
+    background-image: url('/static/img/player.jpg');
+    background-size: 100%;
+    pointer-events: none;
+}
+
+.player-name {
+    position: absolute;
+    top: -100%;
+    text-align: center;
+    pointer-events: none;
 }
 
 

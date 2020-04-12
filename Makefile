@@ -25,6 +25,7 @@ RM = rm -rfv
 $(NAME): dev
 
 install:
+	$(PIP_INSTALL) .[prod]
 	$(PIP_INSTALL) .
 	$(MAKE) front-install
 	$(MAKE) front-deploy-prod

@@ -9,9 +9,10 @@ function Navbar() {
     }
 
     function logout() {
-        del_cookie("user");
         socket.emit("logout", {user: g_username});
+        del_cookie("user");
         g_username = null;
+        g_is_running = false;
     }
 
     return {
