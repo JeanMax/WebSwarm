@@ -6,7 +6,7 @@ from flask_socketio import SocketIO, emit
 
 import WebSwarm.log as log
 from WebSwarm.framerate import FrameRateHandler
-from WebSwarm.twodim import World
+from WebSwarm.game import World
 from WebSwarm.chat import Chat
 
 

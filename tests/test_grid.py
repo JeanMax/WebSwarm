@@ -1,4 +1,4 @@
-from WebSwarm.twodim import World, Boid
+from WebSwarm.game import World, Boid
 
 
 def sort(boid_list):
@@ -7,9 +7,10 @@ def sort(boid_list):
 
 def test_grid():
     w = World()
+    w.next_frame()
     for b in w.boids:
         assert (
-            sort(b.in_range(w.grid))
+            sort(w.grid_man.find_neighbors(b))
             == sort(b.in_range_slow(Boid.sight_radius, w.boids))
         )
 
@@ -19,11 +20,10 @@ def test_grid_with_players():
     w.add_player(41, 41)
     w.add_player(42, 42)
     w.add_player(43, 43)
-    w.grid = w._new_grid()
-    w._fill_grid()
+    w.next_frame()
     for b in w.boids:
         assert (
-            sort(b.in_range(w.grid))
+            sort(w.grid_man.find_neighbors(b))
             == sort(b.in_range_slow(
                 Boid.sight_radius, w.boids + list(w.players_dic.values()))
             )
