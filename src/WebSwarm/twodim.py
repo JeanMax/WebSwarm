@@ -3,7 +3,7 @@ import math
 # these are actually percents, eh
 WORLD_WIDTH = 100
 WORLD_HEIGHT = 100
-BOXED_WORLD = False
+BOXED_WORLD = True
 
 
 class Point():

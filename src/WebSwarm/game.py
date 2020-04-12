@@ -9,9 +9,9 @@ class Boid(Vector):
     max_speed = 0.5
 
     alignment_coef = 1.5
-    cohesion_coef = 1
-    separation_coef = 1
-    player_coef = 100
+    cohesion_coef = 0.3
+    separation_coef = 5
+    player_coef = 600
 
     def __init__(self, x=None, y=None, key=None):
         super().__init__(
@@ -74,8 +74,8 @@ class Boid(Vector):
 
 class Player(Vector):
     size = 5
-    # sight_radius = size + 0.5
-    max_speed = 0.5
+    sight_radius = size + 0.5
+    max_speed = Boid.max_speed  # it's really hard to play if players are faster
 
     def __init__(self, x=None, y=None, key=None, name=None):
         super().__init__(
@@ -110,7 +110,7 @@ class GridManager():
     for neighbors inside the tile containing the point of interest.
     Maths!
     """
-    tile_size = Boid.sight_radius * 2
+    tile_size = max(Player.sight_radius, Boid.sight_radius) * 2
 
     def __init__(self):
         self.grid = self._new_grid()
@@ -149,17 +149,22 @@ class GridManager():
         return ret
 
     def find_neighbors(self, point):
+        maybe_neighbors = self._in_range_maybe(point)
         return point.in_range_slow(
-            Boid.sight_radius,  # humph
-            self._in_range_maybe(point)
+            Boid.sight_radius,
+            [b for b in maybe_neighbors if isinstance(b, Boid)]
+        ) + point.in_range_slow(
+            Player.sight_radius,
+            [p for p in maybe_neighbors if isinstance(p, Player)]
         )
 
 
 class World():
-    def __init__(self, max_boids=30):
+    def __init__(self, max_boids=80):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()
+        self.grid_man.update(self.boids)
 
     def to_json(self):
         return (
@@ -192,9 +197,9 @@ class World():
             p.next_direction.y = dir_y
 
     def next_frame(self):
-        units = self.boids + list(self.players_dic.values())
-        self.grid_man.update(units)
         for b in self.boids:
             b.apply_forces(self.grid_man)
+        units = self.boids + list(self.players_dic.values())
         for u in units:
             u.move()
+        self.grid_man.update(units)
