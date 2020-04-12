@@ -1,4 +1,4 @@
-from WebSwarm.game import World, Boid
+from WebSwarm.game import World, Boid, Player
 
 
 def sort(boid_list):
@@ -24,7 +24,13 @@ def test_grid_with_players():
     for b in w.boids:
         assert (
             sort(w.grid_man.find_neighbors(b))
-            == sort(b.in_range_slow(
-                Boid.sight_radius, w.boids + list(w.players_dic.values()))
+            == sort(
+                b.in_range_slow(
+                    Boid.sight_radius,
+                    w.boids
+                ) + b.in_range_slow(
+                    Player.sight_radius,
+                    list(w.players_dic.values())
+                )
             )
         )

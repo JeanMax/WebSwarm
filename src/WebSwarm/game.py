@@ -9,9 +9,9 @@ class Boid(Vector):
     max_speed = 0.5
 
     alignment_coef = 1.5
-    cohesion_coef = 1
-    separation_coef = 1
-    player_coef = 100
+    cohesion_coef = 0.3
+    separation_coef = 5
+    player_coef = 600
 
     def __init__(self, x=None, y=None, key=None):
         super().__init__(
@@ -23,6 +23,7 @@ class Boid(Vector):
             dir_y=rdm(-Boid.max_speed, Boid.max_speed),
             key=key
         )
+        self.neighbors = []
 
     def __repr__(self):
         return f"<Boid ({self.x:.4g}, {self.y:.4g})>"
@@ -36,46 +37,44 @@ class Boid(Vector):
             '}'
         )
 
-    @staticmethod
-    def _alignement_force(neighbors):
+    def _alignement_force(self):
         mean_direction = Point.mean([
             n.direction if isinstance(n, Boid)
             else n.direction * Boid.player_coef
-            for n in neighbors
+            for n in self.neighbors
         ])
         return mean_direction * Boid.alignment_coef
 
-    @staticmethod
-    def _cohesion_force(neighbors):
-        mean_coord = Point.mean(neighbors)
+    def _cohesion_force(self):
+        mean_coord = Point.mean(self.neighbors)
         return mean_coord * Boid.cohesion_coef
 
-    def _separation_force(self, neighbors):
+    def _separation_force(self):
         mean_repulsion = Point.mean([
             self - n
             # if isinstance(n, Boid)
             # else self - (n * Boid.player_coef)
-            for n in neighbors
+            for n in self.neighbors
         ])
         return mean_repulsion * Boid.separation_coef
 
     def apply_forces(self, grid_man):
-        neighbors = grid_man.find_neighbors(self)
-        if not neighbors:
+        self.neighbors = grid_man.find_neighbors(self)
+        if not self.neighbors:
             self.next_direction = self.direction
             return
         self.next_direction = Point.mean([
             self.direction,
-            self._alignement_force(neighbors),
-            self._cohesion_force(neighbors),
-            self._separation_force(neighbors),
+            self._alignement_force(),
+            self._cohesion_force(),
+            self._separation_force(),
         ])
 
 
 class Player(Vector):
     size = 5
-    # sight_radius = size + 0.5
-    max_speed = 0.5
+    sight_radius = size + 0.5
+    max_speed = Boid.max_speed  # it's really hard to play if players are faster
 
     def __init__(self, x=None, y=None, key=None, name=None):
         super().__init__(
@@ -88,6 +87,8 @@ class Player(Vector):
             key=key
         )
         self.name = name
+        self.neighbors = []
+        self.score = 0
 
     def __repr__(self):
         return f"<Player ({self.x:.4g}, {self.y:.4g})>"
@@ -98,9 +99,23 @@ class Player(Vector):
             f'"key":"{self.key}",'
             f'"x":{self.x:.4g},'
             f'"y":{self.y:.4g},'
-            f'"name":"{self.name}"'
+            f'"name":"{self.name}",'
+            f'"score":{self.score}'
             '}'
         )
+
+    def fetch_neighbors(self, grid_man):
+        self.neighbors = grid_man.find_neighbors(self)
+
+    def fetch_score(self):
+        minion_list = []
+        to_check = self.neighbors[::]
+        while to_check:
+            minion = to_check.pop()
+            if minion not in minion_list:
+                to_check += minion.neighbors
+                minion_list.append(minion)
+        self.score = len(minion_list)
 
 
 class GridManager():
@@ -110,7 +125,7 @@ class GridManager():
     for neighbors inside the tile containing the point of interest.
     Maths!
     """
-    tile_size = Boid.sight_radius * 2
+    tile_size = max(Player.sight_radius, Boid.sight_radius) * 2
 
     def __init__(self):
         self.grid = self._new_grid()
@@ -149,17 +164,23 @@ class GridManager():
         return ret
 
     def find_neighbors(self, point):
+        maybe_neighbors = self._in_range_maybe(point)
         return point.in_range_slow(
-            Boid.sight_radius,  # humph
-            self._in_range_maybe(point)
+            Boid.sight_radius if isinstance(point, Boid)
+            else Player.sight_radius,
+            [b for b in maybe_neighbors if isinstance(b, Boid)]
+        ) + point.in_range_slow(
+            Player.sight_radius,
+            [p for p in maybe_neighbors if isinstance(p, Player)]
         )
 
 
 class World():
-    def __init__(self, max_boids=30):
+    def __init__(self, max_boids=80):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()
+        self.grid_man.update(self.boids)
 
     def to_json(self):
         return (
@@ -192,9 +213,14 @@ class World():
             p.next_direction.y = dir_y
 
     def next_frame(self):
-        units = self.boids + list(self.players_dic.values())
-        self.grid_man.update(units)
+        players = list(self.players_dic.values())
+        units = self.boids + players
         for b in self.boids:
             b.apply_forces(self.grid_man)
+        for p in players:
+            p.fetch_neighbors(self.grid_man)
+        for p in players:
+            p.fetch_score()
         for u in units:
             u.move()
+        self.grid_man.update(units)

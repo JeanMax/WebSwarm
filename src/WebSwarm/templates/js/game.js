@@ -3,7 +3,7 @@
  * https://github.com/kiki727/geMithril
  */
 var g_is_running = false;
-var g_show_fps = true;
+var g_show_fps = false;
 var g_me;
 
 
@@ -28,9 +28,7 @@ function Fps() {
         },
 
         view: function() {
-            return (
-                <p class="content" id="fps">{g_show_fps ? fps + " fps" : ""}</p>
-            );
+            return g_show_fps ? fps + " fps - " : "";
         }
     };
 }
@@ -196,7 +194,10 @@ function Game() {
                     </div>
 
                     <div class="layer" id="layer-info">
-                      <Fps/>
+                      <p>
+                        <Fps/>
+                        Score: {g_me ? g_me.score : 0}
+                      </p>
                     </div>
                   </div>
 
