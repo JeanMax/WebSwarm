@@ -98,15 +98,18 @@ class Vector(Rectangle):
             self.direction.y = -self.direction.y
 
     def _limit_speed(self):
-        if self.next_direction.x > self.max_speed:
-            self.next_direction.x = self.max_speed
-        elif self.next_direction.x < -self.max_speed:
-            self.next_direction.x = -self.max_speed
-
-        if self.next_direction.y > self.max_speed:
-            self.next_direction.y = self.max_speed
-        elif self.next_direction.y < -self.max_speed:
-            self.next_direction.y = -self.max_speed
+        abs_dir_x = abs(self.next_direction.x)
+        abs_dir_y = abs(self.next_direction.y)
+        if abs_dir_x < self.max_speed and abs_dir_y < self.max_speed:
+            return
+        if abs_dir_x:
+            self.next_direction.x = (
+                abs_dir_x / self.next_direction.x
+            ) * self.max_speed
+        if abs_dir_y:
+            self.next_direction.y = (
+                abs_dir_y / self.next_direction.y
+            ) * self.max_speed
 
     def move(self):
         self._limit_speed()
