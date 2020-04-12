@@ -69,13 +69,19 @@ def on_logout(json):
 @socketio.on('start_game')
 def on_startgame(json):
     log.info(f'Start game: {json}')
-    add_player()
+    add_player(json)
 
 
 @socketio.on('stop_game')
 def on_stopgame(json):
     log.info(f'Stop game: {json}')
     rm_player()
+
+
+@socketio.on('change_dir')
+def on_changedir(json):
+    log.info(f'Change dir: {json}')
+    turn_player(json)
 
 
 @socketio.on('connect')
@@ -114,9 +120,9 @@ def game_loop():
 
 # GAME UPDATE HELPERS
 
-def add_player():
+def add_player(username):
     sid = request.sid
-    username = request.cookies.get('user', None)
+    # username = request.cookies.get('user', None)
     with update_lock:
         world.add_player(sid, username)
 
@@ -126,3 +132,9 @@ def rm_player():
     username = request.cookies.get('user', None)
     with update_lock:
         world.rm_player(sid, username)
+
+
+def turn_player(direction):
+    sid = request.sid
+    with update_lock:
+        world.turn_player(sid, direction["x"], direction["y"])

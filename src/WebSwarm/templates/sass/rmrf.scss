@@ -130,6 +130,14 @@ $success: $green;
     position: absolute;
     background-image: url('/static/img/player.jpg');
     background-size: 100%;
+    pointer-events: none;
+}
+
+.player-name {
+    position: absolute;
+    top: -100%;
+    text-align: center;
+    pointer-events: none;
 }
 
 

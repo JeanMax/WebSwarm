@@ -12,6 +12,7 @@ function Navbar() {
         socket.emit("logout", {user: g_username});
         del_cookie("user");
         g_username = null;
+        g_is_running = false;
     }
 
     return {

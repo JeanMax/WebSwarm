@@ -4,6 +4,7 @@
  */
 var g_is_running = false;
 var g_show_fps = true;
+var g_me;
 
 
 function Fps() {
@@ -45,12 +46,13 @@ function Player() {
 
         view: function() {
             return (
-                <div class="player"
-                     style={"left:" + player.x + "%;" +
-                            "top:" + player.y + "%;" +
-                            "width:" + player.w + "%;" +
-                            "height:" + player.h + "%"}>
-                </div>
+                  <div class="player"
+                       style={"left:" + player.x + "%;" +
+                              "top:" + player.y + "%;" +
+                              "width:" + player.w + "%;" +
+                              "height:" + player.h + "%"}>
+                    <p class="player-name">{player.name}</p>
+                  </div>
             );
         }
     };
@@ -86,6 +88,7 @@ function UnitList() {
     const player_height = 5; // TODO: fetch from server
     const player_width = player_height * 0.565; // TODO: fetch from server
     const players = {};
+    const my_direction =  {x: undefined, y: undefined};
 
     function server_update(data) {
         if (!g_is_running) {
@@ -109,11 +112,46 @@ function UnitList() {
             Object.assign(players[updated_player.key], updated_player);
         });
         m.redraw();
+
+        g_me = players[socket.id];
+        if (g_me
+            && (g_me.dir.x != my_direction.x || g_me.dir.y != my_direction.y)) {
+            g_me.dir.x = my_direction.x;
+            g_me.dir.y = my_direction.y;
+            socket.emit("change_dir", my_direction);
+        }
     }
 
     return {
         oninit: function() {
             socket.on("update", server_update);
+        },
+
+        oncreate: function() {
+            const game = document.getElementById("layer-unit");
+            game.onclick = function(event) {
+                if (!g_is_running) {
+                    return;
+                }
+                const e = event || window.event;
+                const click_coord = {
+                    x: e.offsetX / game.offsetWidth * 100,
+                    y: e.offsetY / game.offsetHeight * 100
+                };
+                if (click_coord.x >= g_me.x && click_coord.x <= g_me.x + g_me.w
+                   && click_coord.y >= g_me.y && click_coord.y <= g_me.y + g_me.h) {
+                    //player clicked
+                    my_direction.x = 0;
+                    my_direction.y = 0;
+                } else {
+                    my_direction.x = click_coord.x - (g_me.x + g_me.w / 2);
+                    my_direction.y = click_coord.y - (g_me.y + g_me.h / 2);
+                    const speed_scale = 15;
+                    my_direction.x /= speed_scale;
+                    my_direction.y /= speed_scale;
+                }
+
+            };
         },
 
         view: function() {
@@ -137,7 +175,7 @@ function Game() {
             return;
         }
         g_is_running = true;
-        socket.emit("start_game", null);
+        socket.emit("start_game", g_username);
     }
 
     function stop() {

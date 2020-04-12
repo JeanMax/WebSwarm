@@ -64,6 +64,8 @@ class Rectangle(Point):
 
 
 class Vector(Rectangle):
+    max_speed = 1
+
     def __init__(self, x=0, y=0, w=0, h=0, dir_x=0, dir_y=0, key=None):
         super().__init__(x=x, y=y, w=w, h=h)
         self.direction = Point(x=dir_x, y=dir_y)
@@ -74,18 +76,6 @@ class Vector(Rectangle):
         return (
             f"<Vector ({self.x:.4g}, {self.y:.4g}), ({self.w}, {self.h}), "
             f"({self.direction.x:.4g}, {self.direction.y:.4g})>"
-        )
-
-    def to_json(self):
-        return (
-            '{'
-            f'"key":"{self.key}",'
-            f'"x":{self.x:.4g},"y":{self.y:.4g}'
-            # f'"w":{self.w},"h":{self.h},'
-            # '"dir":{'
-            # f'"x":{self.direction.x:.2g},"y":{self.direction.y:.2g}'
-            # '}'
-            '}'
         )
 
     def _teleport(self):
@@ -108,7 +98,19 @@ class Vector(Rectangle):
             self.y -= 2 * self.direction.y
             self.direction.y = -self.direction.y
 
+    def _limit_speed(self):
+        if self.next_direction.x > self.max_speed:
+            self.next_direction.x = self.max_speed
+        elif self.next_direction.x < -self.max_speed:
+            self.next_direction.x = -self.max_speed
+
+        if self.next_direction.y > self.max_speed:
+            self.next_direction.y = self.max_speed
+        elif self.next_direction.y < -self.max_speed:
+            self.next_direction.y = -self.max_speed
+
     def move(self):
+        self._limit_speed()
         self.direction = self.next_direction
         # self += self.direction
         self.x += self.direction.x
@@ -146,6 +148,15 @@ class Boid(Vector):
     def __repr__(self):
         return f"<Boid ({self.x:.4g}, {self.y:.4g})>"
 
+    def to_json(self):
+        return (
+            '{'
+            f'"key":{self.key},'
+            f'"x":{self.x:.4g},'
+            f'"y":{self.y:.4g}'
+            '}'
+        )
+
     def _in_range_maybe(self, grid):
         ret = []
         offset = 1  # math.ceil(Boid.sight_radius / World.tile_size)
@@ -161,17 +172,6 @@ class Boid(Vector):
 
     def in_range(self, grid):
         return self.in_range_slow(Boid.sight_radius, self._in_range_maybe(grid))
-
-    def _limit_speed(self):
-        if self.next_direction.x > Boid.max_speed:
-            self.next_direction.x = Boid.max_speed
-        elif self.next_direction.x < -Boid.max_speed:
-            self.next_direction.x = -Boid.max_speed
-
-        if self.next_direction.y > Boid.max_speed:
-            self.next_direction.y = Boid.max_speed
-        elif self.next_direction.y < -Boid.max_speed:
-            self.next_direction.y = -Boid.max_speed
 
     @staticmethod
     def _alignement_force(neighbors):
@@ -198,13 +198,12 @@ class Boid(Vector):
             self._cohesion_force(neighbors),
             self._separation_force(neighbors),
         ])
-        self._limit_speed()
 
 
 class Player(Vector):
     size = 5
-    sight_radius = size + 0.5
-    max_speed = 0.5
+    # sight_radius = size + 0.5
+    max_speed = 0.7
 
     def __init__(self, x=None, y=None, key=None, name=None):
         super().__init__(
@@ -221,9 +220,19 @@ class Player(Vector):
     def __repr__(self):
         return f"<Player ({self.x:.4g}, {self.y:.4g})>"
 
+    def to_json(self):
+        return (
+            '{'
+            f'"key":"{self.key}",'
+            f'"x":{self.x:.4g},'
+            f'"y":{self.y:.4g},'
+            f'"name":"{self.name}"'
+            '}'
+        )
+
 
 class World():
-    tile_size = max(Player.sight_radius, Boid.sight_radius) * 2
+    tile_size = Boid.sight_radius * 2
 
     def __init__(self, max_boids=100):
         self.players_dic = {}
@@ -252,29 +261,35 @@ class World():
         ]
 
     def _fill_grid(self):
-        for b in self.boids:
+        for b in self.boids + list(self.players_dic.values()):
             self.grid[
                 int(b.y // World.tile_size)
             ][
                 int(b.x // World.tile_size)
             ].append(b)
 
-    def add_player(self, sid, username):
-        p = self.players_dic.get(sid, None)
+    def add_player(self, key, username):
+        p = self.players_dic.get(key, None)
         if p is not None:
             p.name = username
         else:
-            self.players_dic[sid] = Player(key=sid, name=username)
+            self.players_dic[key] = Player(key=key, name=username)
 
-    def rm_player(self, sid, username):
-        p = self.players_dic.get(sid, None)
+    def rm_player(self, key, username):
+        p = self.players_dic.get(key, None)
         if p is not None:
-            del self.players_dic[sid]
+            del self.players_dic[key]
+
+    def turn_player(self, key, dir_x, dir_y):
+        p = self.players_dic.get(key, None)
+        if p is not None:
+            p.next_direction.x = dir_x
+            p.next_direction.y = dir_y
 
     def next_frame(self):
         for b in self.boids:
             b.apply_forces(self.grid)
-        for b in self.boids:
+        for b in self.boids + list(self.players_dic.values()):
             b.move()
         self.grid = self._new_grid()
         self._fill_grid()
