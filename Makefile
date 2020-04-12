@@ -2,7 +2,7 @@
 # Customize this!
 NAME = WebSwarm
 AUTHOR = JeanMax
-VERSION = 0.3.1
+VERSION = 0.3.2
 
 
 # Some globads
