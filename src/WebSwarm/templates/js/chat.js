@@ -15,14 +15,40 @@ var Message = {
 };
 
 
-function Chat() {
-    var chat_logs = g_chat_logs;
+function MessageList() {
+    const chat_logs = g_chat_logs;
 
-    function chat_logs_to_html() {
-        return chat_logs.map((msg, k) => {
-            return <Message user={msg.user} msg={msg.content} key={k}/>;
-        });
+    function recv_msg(msg) {
+        chat_logs.push(msg);  //TODO: limit log size?
+        setTimeout(m.redraw, 1);
     }
+
+    function recv_logs(srv_chat_logs) {
+        srv_chat_logs.forEach(msg => {
+            chat_logs.push(msg);
+        });
+        setTimeout(m.redraw, 1);
+    }
+
+    return {
+        oninit: function() {
+            if (!g_chat_logs.length) {
+                socket.emit("chat_logs", null);
+                socket.on("srv_chat_logs", recv_logs);
+            }
+            socket.on("srv_chat_msg", recv_msg);
+        },
+
+        view: function() {
+            return chat_logs.map((msg, k) => {
+                return <Message user={msg.user} msg={msg.content} key={k}/>;
+            });
+        }
+    };
+}
+
+
+function Chat() {
 
     function send_chat_msg() {
         const chat_msg_input = document.getElementById("message-input");
@@ -35,20 +61,11 @@ function Chat() {
             return;
         }
         chat_msg_input.value = "";
-        socket.emit(
-            "chat_msg",
-            {user: g_username, content: msg}
-        );
+        socket.emit("chat_msg", {user: g_username, content: msg});
     }
 
     return {
         oninit: function() {
-            socket.on("chat_message_log", function(msg) {
-                console.log("chat msg received:" + JSON.stringify(msg)); // DEBUG
-                g_chat_logs.push(msg);
-                setTimeout(m.redraw, 1); //TODO: iiiiirk UGLY
-            });
-
             document.addEventListener("keydown", function (event) {
                 const e = event || window.event;
                 if (e.keyCode == 13
@@ -56,7 +73,6 @@ function Chat() {
                     send_chat_msg();
                 }
             });
-
         },
 
         oncreate: function() {
@@ -73,7 +89,7 @@ function Chat() {
                 <div class="columns is-centered">
                   <div class="box">
                     <div class="column" id="message-logs" style="height:20em; overflow-y:auto">
-                      {chat_logs_to_html()}
+                      <MessageList/>
                     </div>
                     <div class="column">
                       <div class="field is-grouped">

@@ -40,11 +40,11 @@ def info(*args):
 
 def warning(*args):
     """Log a warning (yellow)"""
-    if VERBOSE >= 2:
+    if VERBOSE >= 1:
         _log(YELLOW + "[WARNING]", *args, file=sys.stderr)
 
 
 def debug(*args):
     """Log a debug (magenta)"""
-    if VERBOSE >= 3:
+    if VERBOSE >= 2:
         _log(MAGENTA + "[DEBUG]", *args, file=sys.stderr)

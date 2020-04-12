@@ -10,7 +10,7 @@ function open_modal() {
 function LoginModal() {
 
     function is_valid_username(s) {
-        return /^\w{2,}$/.test(s);
+        return /^\w{2,32}$/.test(s);
     }
 
     function validate_username() {

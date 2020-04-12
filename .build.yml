@@ -4,10 +4,10 @@ packages:
   - python
   - npm
 sources:
-  - git@git.sr.ht:~jean-max/WebShell
+  - git@git.sr.ht:~jean-max/WebSwarm
 environment:
   PIP_PROGRESS_BAR: 'off'
-  PROJECT: WebShell
+  PROJECT: WebSwarm
   LC_ALL: C.UTF-8
   LANG: C.UTF-8
 
@@ -34,7 +34,7 @@ tasks:
       make reinstall
       make uninstall
       make
-      python -c 'import WebShell'
+      python -c 'import WebSwarm'
 
   - lint: |
       cd $PROJECT

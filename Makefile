@@ -1,8 +1,8 @@
 
 # Customize this!
-NAME = WebShell
+NAME = WebSwarm
 AUTHOR = JeanMax
-VERSION = 0.2.1
+VERSION = 0.3.1
 
 
 # Some globads
@@ -25,6 +25,7 @@ RM = rm -rfv
 $(NAME): dev
 
 install:
+	$(PIP_INSTALL) .[prod]
 	$(PIP_INSTALL) .
 	$(MAKE) front-install
 	$(MAKE) front-deploy-prod
@@ -56,12 +57,9 @@ front-deploy-prod:
 	npm run deploy
 
 bump-version:
-	IFS=. read -r MAJOR MINOR PATCH <<< $(VERSION) && \
-	NEW_VERSION=$$MAJOR.$$((MINOR + 1)).$$PATCH && \
-	sed -Ei "s/^(VERSION = ).*/\1$$NEW_VERSION/" Makefile && \
-	sed -Ei "s/(version=)'.*'/\1'$$NEW_VERSION'/" setup.py && \
-	sed -Ei "s/(\"version\": )\".*\"/\1\"$$NEW_VERSION\"/" package.json && \
-	printf "\n\nRun these commands to commit/tag/push new version:\n\ngit add -A\ngit commit -m 'Bump version (v$$NEW_VERSION)'\ngit tag v$$NEW_VERSION\ngit push\ngit push --tags\n\n"
+	sed -Ei "s/(version=)'.*'/\1'$(VERSION)'/" setup.py
+	sed -Ei "s/(\"version\": )\".*\"/\1\"$(VERSION)\"/" package.json
+	printf "\n\nRun these commands to commit/tag/push new version:\n\ngit add -A\ngit commit -m 'Bump version (v$(VERSION))'\ngit tag v$(VERSION)\ngit push\ngit push --tags\n\n"
 
 
 
