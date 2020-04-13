@@ -59,6 +59,10 @@ function Player() {
 function Boid() {
     let boid = null;
 
+    function direction_to_angle() {
+        Math.atan2(x, -y);
+    }
+
     return {
         oninit: function(vnode) {
             boid = vnode.attrs.boid;
@@ -70,7 +74,10 @@ function Boid() {
                      style={"left:" + boid.x + "%;" +
                             "top:" + boid.y + "%;" +
                             "width:" + boid.w + "%;" +
-                            "height:" + boid.h + "%"}>
+                            "height:" + boid.h + "%;" +
+                            "transform:rotate(" +
+                            Math.atan2(boid.dir.x, -boid.dir.y) +
+                            "rad)"}>
                 </div>
             );
         }

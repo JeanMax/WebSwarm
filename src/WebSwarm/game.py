@@ -37,7 +37,11 @@ class Boid(Vector):
             '{'
             f'"key":{self.key},'
             f'"x":{self.x:.4g},'
-            f'"y":{self.y:.4g}'
+            f'"y":{self.y:.4g},'
+            '"dir":{'
+            f'"x":{self.direction.x:.4g},'
+            f'"y":{self.direction.y:.4g}'
+            '}'
             '}'
         )
 
@@ -210,7 +214,7 @@ class GridManager():
 
 
 class World():
-    def __init__(self, max_boids=30):
+    def __init__(self, max_boids=100):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()
