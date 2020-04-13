@@ -79,7 +79,7 @@ function Boid() {
 
 
 function UnitList() {
-    const boid_height = 3; // TODO: fetch from server
+    const boid_height = 2; // TODO: fetch from server
     const boid_width = boid_height * 0.565; // TODO: fetch from server
     const boids = {};
 

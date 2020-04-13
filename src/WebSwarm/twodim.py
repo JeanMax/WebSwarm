@@ -1,9 +1,13 @@
 import math
+from collections import namedtuple
 
 # these are actually percents, eh
 WORLD_WIDTH = 100
 WORLD_HEIGHT = 100
 BOXED_WORLD = False
+
+
+PointWithDist = namedtuple('PointWithDist', 'point dist')
 
 
 class Point():
@@ -16,11 +20,20 @@ class Point():
     def distance(self, point):
         return math.hypot(point.x - self.x, point.y - self.y)
 
-    def in_range_slow(self, range_dist, point_list):
-        return [
-            p for p in point_list
-            if p != self and self.distance(p) < range_dist
-        ]
+    def in_range_slow(self, range_dist, point_list, with_dist=False):
+        if not with_dist:
+            return [
+                p for p in point_list
+                if p != self and self.distance(p) < range_dist
+            ]
+        ret = []
+        for p in point_list:
+            if p == self:
+                continue
+            dist = self.distance(p)
+            if dist < range_dist:
+                ret.append(PointWithDist(point=p, dist=dist))
+        return ret
 
     def __add__(self, rhs):
         if isinstance(rhs, Point):

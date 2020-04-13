@@ -4,23 +4,25 @@ from WebSwarm.twodim import WORLD_WIDTH, WORLD_HEIGHT, Point, Vector
 
 
 class Boid(Vector):
-    size = 3
-    sight_radius = size + 0.5
+    size = 2
+    sight_radius = size * 2
     max_speed = 0.8
 
-    alignment_coef = 30
-    cohesion_coef = 0.5
-    separation_coef = 1.5
+    alignment_coef = 2.5
+    cohesion_coef = 0.1
+    separation_coef = 2.5
     player_coef = 1000
 
     def __init__(self, x=None, y=None, key=None):
         super().__init__(
             x=x if x is not None else rdm(0, WORLD_WIDTH - Boid.size),
             y=y if y is not None else rdm(0, WORLD_HEIGHT - Boid.size),
+            # x=WORLD_WIDTH / 2, y=WORLD_HEIGHT / 2,
             w=Boid.size * 0.565,  # 16/9, it's actually a square...
             h=Boid.size,
             dir_x=rdm(-Boid.max_speed, Boid.max_speed),
             dir_y=rdm(-Boid.max_speed, Boid.max_speed),
+            # dir_x=0, dir_y=0,
             key=key
         )
         self.neighbors = []
@@ -38,23 +40,34 @@ class Boid(Vector):
         )
 
     def _alignement_force(self):
+        neighbors = [n.point for n in self.neighbors]
         mean_direction = Point.mean([
             n.direction if isinstance(n, Boid)
             else n.direction * Boid.player_coef
-            for n in self.neighbors
+            for n in neighbors
         ])
         return mean_direction * Boid.alignment_coef
 
     def _cohesion_force(self):
-        mean_coord = Point.mean(self.neighbors)
+        neighbors = [n.point for n in self.neighbors]
+        mean_coord = Point.mean(neighbors)
         return mean_coord * Boid.cohesion_coef
 
     def _separation_force(self):
+        neighbors = [
+            n for n in self.neighbors
+            if n.dist < Boid.size
+        ]
+        if not neighbors:
+            return self.direction  # Point(0, 0)
         mean_repulsion = Point.mean([
-            self - n
-            # if isinstance(n, Boid)
-            # else self - (n * Boid.player_coef)
-            for n in self.neighbors
+            (self - n.point) / (n.dist * n.dist)
+            if n.dist else
+            Point(
+                rdm(-Boid.max_speed, Boid.max_speed),
+                rdm(-Boid.max_speed, Boid.max_speed)
+            )
+            for n in neighbors
         ])
         return mean_repulsion * Boid.separation_coef
 
@@ -73,7 +86,7 @@ class Boid(Vector):
 
 class Player(Vector):
     size = 5
-    sight_radius = size + 0.5
+    sight_radius = size * 1.5
     max_speed = Boid.max_speed  # it's really hard to play if players are faster
 
     def __init__(self, x=None, y=None, key=None, name=None):
@@ -111,7 +124,7 @@ class Player(Vector):
         minion_list = []
         to_check = self.neighbors[::]
         while to_check:
-            minion = to_check.pop()
+            minion = to_check.pop().point
             if minion not in minion_list:
                 to_check += minion.neighbors
                 minion_list.append(minion)
@@ -168,15 +181,17 @@ class GridManager():
         return point.in_range_slow(
             Boid.sight_radius if isinstance(point, Boid)
             else Player.sight_radius,
-            [b for b in maybe_neighbors if isinstance(b, Boid)]
+            [b for b in maybe_neighbors if isinstance(b, Boid)],
+            with_dist=True
         ) + point.in_range_slow(
             Player.sight_radius,
-            [p for p in maybe_neighbors if isinstance(p, Player)]
+            [p for p in maybe_neighbors if isinstance(p, Player)],
+            with_dist=True
         )
 
 
 class World():
-    def __init__(self, max_boids=80):
+    def __init__(self, max_boids=50):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()
