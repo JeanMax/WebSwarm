@@ -1,5 +1,6 @@
 import math
 from random import uniform as rdm
+
 from WebSwarm.twodim import WORLD_WIDTH, WORLD_HEIGHT, Point, Vector
 
 
@@ -11,6 +12,7 @@ class Boid(Vector):
     alignment_coef = 2.5
     cohesion_coef = 0.1
     separation_coef = 2.5
+    border_repulsion_coef = 1
     player_coef = 1000
 
     def __init__(self, x=None, y=None, key=None):
@@ -71,17 +73,34 @@ class Boid(Vector):
         ])
         return mean_repulsion * Boid.separation_coef
 
+    def _border_repulsion_force(self):
+        border_limit = Boid.size * 4
+        repulsion = self.direction
+        if self.x < border_limit:
+            repulsion.x = Boid.max_speed
+        elif self.x + self.w > WORLD_WIDTH - border_limit:
+            repulsion.x = -Boid.max_speed
+        if self.y < border_limit:
+            repulsion.y = Boid.max_speed
+        elif self.y + self.h > WORLD_HEIGHT - border_limit:
+            repulsion.y = -Boid.max_speed
+        return repulsion * Boid.border_repulsion_coef
+
     def apply_forces(self, grid_man):
         self.neighbors = grid_man.find_neighbors(self)
-        if not self.neighbors:
-            self.next_direction = self.direction
-            return
-        self.next_direction = Point.mean([
-            self.direction,
-            self._alignement_force(),
-            self._cohesion_force(),
-            self._separation_force(),
-        ])
+        if self.neighbors:
+            self.next_direction = Point.mean([
+                self.direction,
+                self._alignement_force(),
+                self._cohesion_force(),
+                self._separation_force(),
+                self._border_repulsion_force(),
+            ])
+        else:
+            self.next_direction = Point.mean([
+                self.direction,
+                self._border_repulsion_force(),
+            ])
 
 
 class Player(Vector):
@@ -191,7 +210,7 @@ class GridManager():
 
 
 class World():
-    def __init__(self, max_boids=50):
+    def __init__(self, max_boids=30):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()

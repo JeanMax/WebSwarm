@@ -4,7 +4,7 @@ from collections import namedtuple
 # these are actually percents, eh
 WORLD_WIDTH = 100
 WORLD_HEIGHT = 100
-BOXED_WORLD = False
+BOXED_WORLD = True
 
 
 PointWithDist = namedtuple('PointWithDist', 'point dist')
