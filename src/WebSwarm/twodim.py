@@ -140,7 +140,7 @@ class Vector(Rectangle):
     def move(self):
         self._limit_speed()
         self.direction = self.next_direction
-        self.x += self.direction.x
+        self.x += self.direction.x * 0.565  # compensation 16/9 distorsion
         self.y += self.direction.y
 
         if not self.is_outside():

@@ -7,7 +7,7 @@ from WebSwarm.twodim import WORLD_WIDTH, WORLD_HEIGHT, Point, Vector
 class Boid(Vector):
     size = 2
     sight_radius = size * 2
-    max_speed = 0.6
+    max_speed = 1
     perch_delay = 150
 
     alignment_coef = 1
