@@ -7,13 +7,13 @@ from WebSwarm.twodim import WORLD_WIDTH, WORLD_HEIGHT, Point, Vector
 class Boid(Vector):
     size = 2
     sight_radius = size * 2
-    max_speed = 0.8
+    max_speed = 0.6
 
-    alignment_coef = 2.5
-    cohesion_coef = 0.1
-    separation_coef = 2.5
-    border_repulsion_coef = 1
-    player_coef = 1000
+    alignment_coef = 1
+    cohesion_coef = 1
+    separation_coef = 1.2
+    border_repulsion_coef = 0.8
+    player_coef = 5
 
     def __init__(self, x=None, y=None, key=None):
         super().__init__(
@@ -65,8 +65,8 @@ class Boid(Vector):
             if n.dist < Boid.size
         ]
         if not neighbors:
-            return self.direction  # Point(0, 0)
-        mean_repulsion = Point.mean([
+            return Point(0, 0)
+        mean_repulsion = Point.sum([
             (self - n.point) / (n.dist * n.dist)
             if n.dist else
             Point(
@@ -78,8 +78,8 @@ class Boid(Vector):
         return mean_repulsion * Boid.separation_coef
 
     def _border_repulsion_force(self):
-        border_limit = Boid.size * 4
-        repulsion = self.direction
+        border_limit = Boid.size * 2
+        repulsion = Point(0, 0)
         if self.x < border_limit:
             repulsion.x = Boid.max_speed
         elif self.x + self.w > WORLD_WIDTH - border_limit:
@@ -92,19 +92,20 @@ class Boid(Vector):
 
     def apply_forces(self, grid_man):
         self.neighbors = grid_man.find_neighbors(self)
+
         if self.neighbors:
-            self.next_direction = Point.mean([
+            self.next_direction = Point.sum([
                 self.direction,
                 self._alignement_force(),
-                self._cohesion_force(),
+                # self._cohesion_force(),
                 self._separation_force(),
                 self._border_repulsion_force(),
             ])
-        else:
-            self.next_direction = Point.mean([
-                self.direction,
-                self._border_repulsion_force(),
-            ])
+        # else:
+        #     self.next_direction = Point.sum([
+        #         self.direction,
+        #         self._border_repulsion_force(),
+        #     ])
 
 
 class Player(Vector):
@@ -148,7 +149,7 @@ class Player(Vector):
         to_check = self.neighbors[::]
         while to_check:
             minion = to_check.pop().point
-            if minion not in minion_list:
+            if minion not in minion_list and minion != self:
                 to_check += minion.neighbors
                 minion_list.append(minion)
         self.score = len(minion_list)
@@ -214,7 +215,7 @@ class GridManager():
 
 
 class World():
-    def __init__(self, max_boids=100):
+    def __init__(self, max_boids=80):
         self.players_dic = {}
         self.boids = [Boid(key=k) for k in range(max_boids)]
         self.grid_man = GridManager()

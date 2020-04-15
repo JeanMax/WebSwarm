@@ -109,12 +109,13 @@ def on_error(e):
 def game_loop():
     timer = FrameRateHandler(socketio.sleep, fps=30)
     while True:
-        socketio.emit(
-            "update",
-            world.to_json()
-        )
-        with update_lock:
-            world.next_frame()
+        if world.players_dic:  # don't bother if there are no players
+            socketio.emit(
+                "update",
+                world.to_json()
+            )
+            with update_lock:
+                world.next_frame()
         timer.wait_next_frame()
 
 

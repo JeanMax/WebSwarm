@@ -4,7 +4,7 @@ from collections import namedtuple
 # these are actually percents, eh
 WORLD_WIDTH = 100
 WORLD_HEIGHT = 100
-BOXED_WORLD = False
+BOXED_WORLD = True
 
 
 PointWithDist = namedtuple('PointWithDist', 'point dist')
@@ -59,6 +59,13 @@ class Point():
             y=sum([p.y for p in point_list]) / n
         )
 
+    @staticmethod
+    def sum(point_list):
+        return Point(
+            x=sum([p.x for p in point_list]),
+            y=sum([p.y for p in point_list])
+        )
+
 
 class Rectangle(Point):
     def __init__(self, x=0, y=0, w=1, h=1):
@@ -111,23 +118,28 @@ class Vector(Rectangle):
             self.direction.y = -self.direction.y
 
     def _limit_speed(self):
+
+        # magnitude = math.hypot(self.next_direction.x, self.next_direction.y)
+        # if magnitude <= self.max_speed:
+        #     return
+        # ratio = self.max_speed / magnitude
+        # self.next_direction.x *= ratio  # * 0.565
+        # self.next_direction.y *= ratio
+
         abs_dir_x = abs(self.next_direction.x)
         abs_dir_y = abs(self.next_direction.y)
         if abs_dir_x < self.max_speed and abs_dir_y < self.max_speed:
             return
-        if abs_dir_x:
-            self.next_direction.x = (
-                self.next_direction.x / max(abs_dir_x, abs_dir_y)
-            ) * self.max_speed * 0.565
-        if abs_dir_y:
-            self.next_direction.y = (
-                self.next_direction.y / max(abs_dir_x, abs_dir_y)
-            ) * self.max_speed
+        max_abs = max(abs_dir_x, abs_dir_y)
+        if not max_abs:
+            return
+        ratio = self.max_speed / max_abs
+        self.next_direction.x *= ratio  # * 0.565
+        self.next_direction.y *= ratio
 
     def move(self):
         self._limit_speed()
         self.direction = self.next_direction
-        # self += self.direction
         self.x += self.direction.x
         self.y += self.direction.y
 
