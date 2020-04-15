@@ -59,10 +59,6 @@ function Player() {
 function Boid() {
     let boid = null;
 
-    function direction_to_angle() {
-        Math.atan2(x, -y);
-    }
-
     return {
         oninit: function(vnode) {
             boid = vnode.attrs.boid;

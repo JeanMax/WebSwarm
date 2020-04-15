@@ -10,7 +10,7 @@ def test_grid():
     w.next_frame()
     for b in w.boids:
         assert (
-            sort(w.grid_man.find_neighbors(b))
+            sort([p.point for p in w.grid_man.find_neighbors(b)])
             == sort(b.in_range_slow(Boid.sight_radius, w.boids))
         )
 
@@ -23,7 +23,7 @@ def test_grid_with_players():
     w.next_frame()
     for b in w.boids:
         assert (
-            sort(w.grid_man.find_neighbors(b))
+            sort([p.point for p in w.grid_man.find_neighbors(b)])
             == sort(
                 b.in_range_slow(
                     Boid.sight_radius,
