@@ -8,6 +8,7 @@ class Boid(Vector):
     size = 2
     sight_radius = size * 2
     max_speed = 0.6
+    perch_delay = 150
 
     alignment_coef = 1
     cohesion_coef = 1
@@ -28,6 +29,7 @@ class Boid(Vector):
             key=key
         )
         self.neighbors = []
+        self.perch_timer = 0
 
     def __repr__(self):
         return f"<Boid ({self.x:.4g}, {self.y:.4g})>"
@@ -90,9 +92,30 @@ class Boid(Vector):
             repulsion.y = -Boid.max_speed
         return repulsion * Boid.border_repulsion_coef
 
-    def apply_forces(self, grid_man):
-        self.neighbors = grid_man.find_neighbors(self)
+    def perch(self):
+        """
+        Perch the boid...
+        Return True if no other force should be applied.
+        """
+        if self.perch_timer:
+            self.perch_timer -= 1
+            # if not self.perch_timer:  # done perching
+            #     self.y = Boid.size
+            #     self.next_direction.y = Boid.max_speed
+            return self.perch_timer > Boid.perch_delay / 2
+        if self.y > Boid.size:
+            return False
+        self.perch_timer = Boid.perch_delay
+        self.y = 0
+        self.next_direction.x = 0
+        self.next_direction.y = 0
+        return True
 
+    def apply_forces(self, grid_man):
+        if self.perch():
+            return
+
+        self.neighbors = grid_man.find_neighbors(self)
         if self.neighbors:
             self.next_direction = Point.sum([
                 self.direction,
@@ -101,11 +124,6 @@ class Boid(Vector):
                 self._separation_force(),
                 self._border_repulsion_force(),
             ])
-        # else:
-        #     self.next_direction = Point.sum([
-        #         self.direction,
-        #         self._border_repulsion_force(),
-        #     ])
 
 
 class Player(Vector):
